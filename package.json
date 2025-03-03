@@ -1,0 +1,20 @@
+{
+	"name": "ideanick",
+	"private": true,
+	"version": "0.0.0",
+	"scripts": {
+		"b": "pnpm --filter @ideanick/backend",
+		"w": "pnpm --filter @ideanick/webapp",
+		"dev": "pnpm -r --parallel dev",
+		"types": "concurrently 'pnpm b types' 'pnpm w types'",
+		"prettify": "pnpm -r --parralel prettify"
+	},
+	"devDependencies": {
+		"concurrently": "^9.1.2",
+		"prettier": "^3.5.2",
+		"rimraf": "^6.0.1",
+    "ts-node": "^10.9.2",
+		"ts-node-dev": "^10.9.2",
+		"typescript": "~5.7.2"
+	}
+}
