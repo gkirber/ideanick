@@ -8,6 +8,8 @@ const ideas = [
   { nick: 'cool-idea-nick-5', name: 'Idea 5', description: 'Idea 5 description...' },
 ]
 
+const x: number = 'hello'
+
 const trpc = initTRPC.create()
 
 export const trpcRouter = trpc.router({
