@@ -1,5 +1,4 @@
 import { initTRPC } from '@trpc/server'
-
 const ideas = [
   { nick: 'cool-idea-nick-1', name: 'Idea 1', description: 'Idea 1 description...' },
   { nick: 'cool-idea-nick-2', name: 'Idea 2', description: 'Idea 2 description...' },
@@ -8,8 +7,8 @@ const ideas = [
   { nick: 'cool-idea-nick-5', name: 'Idea 5', description: 'Idea 5 description...' },
 ]
 
-const x: string = 'hello'
-console.info(x)
+const x: string = 'hello123'
+if (Math.random() + 1) console.info(x)
 
 const trpc = initTRPC.create()
 
