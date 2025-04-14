@@ -9,14 +9,18 @@ const superjson = (await import('superjson')).default
 
 const getCreateTrpcContext =
   (appContext: AppContext) =>
-  ({ req }: trpcExpress.CreateExpressContextOptions) => ({
-    ...appContext,
-    me: (req as ExpressRequest).user || null,
-  })
+  ({ req }: trpcExpress.CreateExpressContextOptions) => {
+    const me = (req as ExpressRequest).user || null
 
-type TrpcContext = inferAsyncReturnType<ReturnType<typeof getCreateTrpcContext>>
+    return {
+      ...appContext,
+      me,
+    }
+  }
 
-export const trpc = initTRPC.context<AppContext>().create({
+export type TrpcContext = ReturnType<ReturnType<typeof getCreateTrpcContext>>
+
+export const trpc = initTRPC.context<TrpcContext>().create({
   transformer: superjson,
 })
 

@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, User } from '@prisma/client'
 
 export const createAppContext = () => {
   const prisma = new PrismaClient()
