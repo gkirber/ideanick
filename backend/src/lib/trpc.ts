@@ -4,7 +4,11 @@ import { type TrpcRouter } from '../router'
 import { type AppContext } from './ctx'
 import { initTRPC } from '@trpc/server'
 
-export const trpc = initTRPC.context<AppContext>().create()
+const superjson = (await import('superjson')).default
+
+export const trpc = initTRPC.context<AppContext>().create({
+  transformer: superjson,
+})
 
 export const applyTrpcToExpressApp = (expressApp: Express, appContext: AppContext, trpcRouter: TrpcRouter) => {
   expressApp.use(
