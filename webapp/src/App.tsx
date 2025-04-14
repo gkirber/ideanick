@@ -8,12 +8,14 @@ import { ViewIdeaPage } from './pages/ViewIdeaPage'
 import { Layout } from './components/Layout'
 import * as routes from './lib/routes'
 import './styles/global.scss'
+import { SignOutPage } from './pages/signOutPage'
 
 export const App = () => {
   return (
     <TrpcProvider>
       <BrowserRouter>
         <Routes>
+          <Route path={routes.getSignOutRoute()} element={<SignOutPage />} />
           <Route element={<Layout />}>
             <Route path={routes.getSignUpRoute()} element={<SignUpPage />} />
             <Route path={routes.getSignInRoute()} element={<SignInPage />} />
