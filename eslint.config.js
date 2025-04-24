@@ -3,6 +3,7 @@ const { defineConfig } = require('eslint-define-config')
 module.exports = defineConfig({
   extends: ['standard-with-typescript', 'prettier'],
   ignorePatterns: ['node_modules', 'dist'],
+  plugins: ['node'],
   rules: {
     'import/order': [
       'error',
@@ -32,5 +33,6 @@ module.exports = defineConfig({
       },
     ],
     'no-console': ['error', { allow: ['info', 'error', 'warn'] }],
+    'node/no-process-env': ['error'],
   },
 })
