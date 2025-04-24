@@ -1,41 +1,48 @@
 import { env } from 'process'
 import { type Express } from 'express'
 import { Passport } from 'passport'
-import { ExtractJwt, Strategy as JWTStrategy } from 'passport-jwt'
+import { ExtractJwt, Strategy as JWTStrategy, type VerifiedCallback } from 'passport-jwt'
 import { type AppContext } from './ctx'
 
+type JWTPayload = {
+  id: string
+}
+
 export const applyPassportToExpressApp = (expressApp: Express, ctx: AppContext): void => {
+  const jwtSecret = env.JWT_SECRET
+  if (!jwtSecret) {
+    throw new Error('JWT_SECRET is not defined in environment variables')
+  }
+
   const passport = new Passport()
 
   passport.use(
     new JWTStrategy(
       {
-        secretOrKey: env.JWT_SECRET,
+        secretOrKey: jwtSecret,
         jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer'),
       },
-      (jwtPayload: string, done) => {
-        ctx.prisma.user
-          .findUnique({
-            where: { id: jwtPayload },
+      async (jwtPayload: JWTPayload, done: VerifiedCallback) => {
+        try {
+          const user = await ctx.prisma.user.findUnique({
+            where: { id: jwtPayload.id },
           })
-          .then((user) => {
-            if (!user) {
-              done(null, false)
-              return
-            }
-            done(null, user)
-          })
-          .catch((error) => {
-            done(error, false)
-          })
+
+          if (!user) {
+            return done(null, false)
+          }
+
+          return done(null, user)
+        } catch (error) {
+          return done(error, false)
+        }
       }
     )
   )
 
   expressApp.use((req, res, next) => {
     if (!req.headers.authorization) {
-      next()
-      return
+      return next()
     }
     passport.authenticate('jwt', { session: false })(req, res, next)
   })

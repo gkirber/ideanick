@@ -15,6 +15,7 @@ module.exports = defineConfig({
         },
       },
     ],
+    'node/no-process-env': 'error',
     '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/prefer-nullish-coalescing': 'off',
@@ -33,6 +34,5 @@ module.exports = defineConfig({
       },
     ],
     'no-console': ['error', { allow: ['info', 'error', 'warn'] }],
-    'node/no-process-env': ['error'],
   },
 })
