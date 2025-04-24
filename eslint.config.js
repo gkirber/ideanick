@@ -16,6 +16,13 @@ module.exports = defineConfig({
       },
     ],
     'node/no-process-env': 'error',
+    'no-restricted-syntax': [
+      'error',
+      {
+        selector: '[object.type=MetaProperty][property.name="env"]',
+        message: 'Use instead import { env } from "lib/env"',
+      },
+    ],
     '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/prefer-nullish-coalescing': 'off',
