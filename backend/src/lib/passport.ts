@@ -44,6 +44,9 @@ export const applyPassportToExpressApp = (expressApp: Express, ctx: AppContext):
     if (!req.headers.authorization) {
       return next()
     }
-    passport.authenticate('jwt', { session: false })(req, res, next)
+    passport.authenticate('jwt', { session: false }, (...args: any[]) => {
+      req.user = args[1] || undefined
+      next()
+    })(req, res, next)
   })
 }
