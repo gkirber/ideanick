@@ -13,7 +13,7 @@ import { trpc } from '../../../lib/trpc'
 export const SignUpPage = withPageWrapper({
   redirectAuthorized: true,
 })(() => {
-  const trpcUtils = trpc.useContext()
+  const trpcUtils = trpc.useUtils()
   const signUp = trpc.signUp.useMutation()
   const { formik, buttonProps, alertProps } = useForm({
     initialValues: {
