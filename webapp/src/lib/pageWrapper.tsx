@@ -1,10 +1,10 @@
 import { type UseTRPCQueryResult, type UseTRPCQuerySuccessResult } from '@trpc/react-query/shared'
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { NotFoundPage } from '../pages/NotFoundPage'
+import { ErrorPageComponent } from '../components/ErrorPageComponent'
+import { NotFoundPage } from '../pages/other/NotFoundPage'
 import { useAppContext, type AppContext } from './ctx'
 import { getAllIdeasRoute } from './routes'
-import { ErrorPageComponent } from '../components/ErrorPageComponent'
 
 class CheckExistsError extends Error {}
 const checkExistsFn = <T,>(value: T, message?: string): NonNullable<T> => {
