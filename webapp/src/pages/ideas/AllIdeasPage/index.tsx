@@ -1,7 +1,7 @@
 import { zGetIdeasTrpcInput } from '@ideanick/backend/src/router/ideas/getIdeas/input'
 import InfiniteScroll from 'react-infinite-scroller'
 import { Link } from 'react-router-dom'
-import { useDebounce } from '../../../../../backend/src/lib/useDebounce'
+import { useDebounce } from '@ideanick/backend/src/utils/useDebounce'
 import { Alert } from '../../../components/Alert'
 import { Input } from '../../../components/Input'
 import { layoutContentElRef } from '../../../components/Layout'
