@@ -1,4 +1,4 @@
-import { initTRPC, type inferAsyncReturnType } from '@trpc/server'
+import { initTRPC } from '@trpc/server'
 import * as trpcExpress from '@trpc/server/adapters/express'
 import { type Express } from 'express'
 import { expressHandler } from 'trpc-playground/handlers/express'
