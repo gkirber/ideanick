@@ -1,6 +1,5 @@
-@import '../../styles/_vars';
-@import '../../styles/_mixins';
-
+@use '../../styles/vars';
+@use '../../styles/mixins';
 
 $breakpoint: '<=900px';
 

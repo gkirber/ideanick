@@ -1,5 +1,5 @@
-@import '../../../styles/_vars';
-@import '../../../styles/_mixins';
+@use '../../../styles/vars';
+@use '../../../styles/mixins';
 
 .filter {
   margin-bottom: 20px;
@@ -14,7 +14,7 @@
   .ideaLink {
     @include link;
   }
-  
+
   .more {
     margin-top: 15px;
   }
