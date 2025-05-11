@@ -8,7 +8,7 @@
     width: 100%;
     min-height: inherit;
     height: 100%;
-    @include loader($borderWidth: 5px, $size: 60px, $color: $gray);
+    @include mixins.loader($borderWidth: 5px, $size: 60px, $color: vars.$gray);
   }
 
   &.type-section {
@@ -16,6 +16,6 @@
     display: block;
     height: 80px;
     width: 100%;
-    @include loader($borderWidth: 5px, $size: 60px, $color: $gray);
+    @include mixins.loader($borderWidth: 5px, $size: 60px, $color: vars.$gray);
   }
 }

@@ -20,6 +20,9 @@ importers:
       '@trpc/server':
         specifier: ^10.45.2
         version: 10.45.2
+      include-media:
+        specifier: ^2.0.0
+        version: 2.0.0
       react:
         specifier: ^19.0.0
         version: 19.1.0
@@ -29,6 +32,9 @@ importers:
       react-router-dom:
         specifier: ^7.3.0
         version: 7.6.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      reset-css:
+        specifier: ^5.0.2
+        version: 5.0.2
       usehooks-ts:
         specifier: 2.9.1
         version: 2.9.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)

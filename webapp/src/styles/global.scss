@@ -1,5 +1,6 @@
-@use '../../node_modules/reset-css/sass/reset';
-@use './_vars' as vars;
+@use 'reset-css/sass/reset';
+@use 'vars' as vars; // Змінено тут
+@use 'include-media/dist/include-media' as media;
 
 html,
 body,

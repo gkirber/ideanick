@@ -12,7 +12,7 @@
   }
 
   .ideaLink {
-    @include link;
+    @include mixins.link;
   }
 
   .more {
