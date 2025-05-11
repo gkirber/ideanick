@@ -1,11 +1,11 @@
 import cors from 'cors'
 import express from 'express'
 import { createAppContext, type AppContext } from './lib/ctx'
+import { env } from './lib/env' // Перемістіть цей імпорт вище
 import { applyPassportToExpressApp } from './lib/passport'
 import { applyTrpcToExpressApp } from './lib/trpc'
 import { trpcRouter } from './router'
 import { presetDb } from './scripts/presetDb'
-import { env } from './lib/env'
 
 void (async () => {
   let ctx: AppContext | null = null
