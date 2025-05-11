@@ -1,7 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearchPostgres"]
-
 }
 
 datasource db {
@@ -12,6 +11,7 @@ datasource db {
 model User {
   id          String           @id @default(uuid())
   nick        String           @unique
+  email       String           @unique
   name        String           @default("")
   password    String
   createdAt   DateTime         @default(now())
@@ -24,7 +24,6 @@ enum UserPermission {
   BLOCK_IDEAS
   ALL
 }
-
 
 model Idea {
   id           String     @id @default(uuid())
