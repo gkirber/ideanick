@@ -156,6 +156,9 @@ importers:
       passport-jwt:
         specifier: ^4.0.1
         version: 4.0.1
+      react-router-dom:
+        specifier: ^6.15.0
+        version: 6.30.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       superjson:
         specifier: ^2.2.2
         version: 2.2.2
@@ -1498,6 +1501,10 @@ packages:
 
   '@prisma/get-platform@6.7.0':
     resolution: {integrity: sha512-i9IH5lO4fQwnMLvQLYNdgVh9TK3PuWBfQd7QLk/YurnAIg+VeADcZDbmhAi4XBBDD+hDif9hrKyASu0hbjwabw==}
+
+  '@remix-run/router@1.23.0':
+    resolution: {integrity: sha512-O3rHJzAQKamUz1fvE0Qaw0xSFqsA/yafi2iqeE0pvdFtCO1viYx8QL6f3Ln/aCCTLxs68SLf0KPM9eSeM8yBnA==}
+    engines: {node: '>=14.0.0'}
 
   '@rollup/pluginutils@5.1.4':
     resolution: {integrity: sha512-USm05zrsFxYLPdWWq+K3STlWiT/3ELn3RcV5hJMghpeAIhxfsUIg6mt12CBJBInWMV4VneoV7SfGv8xIwo2qNQ==}
@@ -4173,12 +4180,25 @@ packages:
     resolution: {integrity: sha512-z6F7K9bV85EfseRCp2bzrpyQ0Gkw1uLoCel9XBVWPg/TjRj94SkJzUTGfOa4bs7iJvBWtQG0Wq7wnI0syw3EBQ==}
     engines: {node: '>=0.10.0'}
 
+  react-router-dom@6.30.0:
+    resolution: {integrity: sha512-x30B78HV5tFk8ex0ITwzC9TTZMua4jGyA9IUlH1JLQYQTFyxr/ZxwOJq7evg1JX1qGVUcvhsmQSKdPncQrjTgA==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      react: '>=16.8'
+      react-dom: '>=16.8'
+
   react-router-dom@7.6.0:
     resolution: {integrity: sha512-DYgm6RDEuKdopSyGOWZGtDfSm7Aofb8CCzgkliTjtu/eDuB0gcsv6qdFhhi8HdtmA+KHkt5MfZ5K2PdzjugYsA==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
       react: '>=18'
       react-dom: '>=18'
+
+  react-router@6.30.0:
+    resolution: {integrity: sha512-D3X8FyH9nBcTSHGdEKurK7r8OYE1kKFn3d/CF+CoxbSHkxU7o37+Uh7eAHRXr6k2tSExXYO++07PeXJtA/dEhQ==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      react: '>=16.8'
 
   react-router@7.6.0:
     resolution: {integrity: sha512-GGufuHIVCJDbnIAXP3P9Sxzq3UUsddG3rrI3ut1q6m0FI6vxVBF3JoPQ38+W/blslLH4a5Yutp8drkEpXoddGQ==}
@@ -6281,6 +6301,8 @@ snapshots:
   '@prisma/get-platform@6.7.0':
     dependencies:
       '@prisma/debug': 6.7.0
+
+  '@remix-run/router@1.23.0': {}
 
   '@rollup/pluginutils@5.1.4(rollup@4.40.2)':
     dependencies:
@@ -9499,11 +9521,23 @@ snapshots:
 
   react-refresh@0.17.0: {}
 
+  react-router-dom@6.30.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+    dependencies:
+      '@remix-run/router': 1.23.0
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
+      react-router: 6.30.0(react@19.1.0)
+
   react-router-dom@7.6.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
       react-router: 7.6.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+
+  react-router@6.30.0(react@19.1.0):
+    dependencies:
+      '@remix-run/router': 1.23.0
+      react: 19.1.0
 
   react-router@7.6.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:
