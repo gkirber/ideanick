@@ -21,11 +21,11 @@
     "sourceMap": true,
     "resolveJsonModule": true,
     "inlineSources": true,
-    "isolatedModules": false,
+    "isolatedModules": true,
     "lib": ["ES2021", "DOM"],
     "module": "ESNext",
     "target": "ES2021",
-    "moduleResolution": "bundler"
+    "moduleResolution": "node"
   },
   "include": ["src"]
 }
