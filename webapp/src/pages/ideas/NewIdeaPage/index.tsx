@@ -39,9 +39,29 @@ export const NewIdeaPage = withPageWrapper({
         }}
       >
         <FormItems>
-          <Input name="nick" label="Nick" formik={formik} />
-          <Input name="description" label="Description" formik={formik} maxWidth={500} />
-          <Textarea name="text" label="Text" formik={formik} />
+          <Input name="name" label="Name" formik={formik} maxWidth={500} placeholder="Enter idea name" />
+          <Input
+            name="nick"
+            label="Nick"
+            formik={formik}
+            maxWidth={500}
+            placeholder="Use only lowercase letters, numbers and dashes"
+            helperText="Only lowercase letters, numbers and dashes are allowed"
+          />
+          <Input
+            name="description"
+            label="Description"
+            formik={formik}
+            maxWidth={500}
+            placeholder="Brief description of your idea"
+          />
+          <Textarea
+            name="text"
+            label="Text"
+            formik={formik}
+            placeholder="Detailed description of your idea (minimum 100 characters)"
+            helperText="Text should be at least 100 characters long"
+          />
           <Alert {...alertProps} />
           <Button {...buttonProps}>Create Idea</Button>
         </FormItems>

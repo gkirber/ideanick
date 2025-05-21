@@ -1,5 +1,6 @@
 import { promises as fs } from 'fs'
 import path from 'path'
+import { fileURLToPath } from 'url'
 import { getNewIdeaRoute } from '@ideanick/webapp/src/lib/routes'
 import { type Idea, type User } from '@prisma/client'
 import fg from 'fast-glob'
@@ -7,6 +8,9 @@ import Handlebars from 'handlebars'
 import _ from 'lodash'
 import { sendEmailThroughBrevo } from './brevo'
 import { env } from './env'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const getHbrTemplates = _.memoize(async () => {
   const htmlPathsPattern = path.resolve(__dirname, '../emails/dist/**/*.html')

@@ -1,6 +1,6 @@
+import cn from 'classnames'
 import { FormikProps } from 'formik'
 import css from './index.module.scss'
-import cn from 'classnames'
 
 export const Input = ({
   name,
@@ -8,12 +8,16 @@ export const Input = ({
   formik,
   maxWidth,
   type = 'text',
+  placeholder,
+  helperText,
 }: {
   name: string
   label: string
   formik: FormikProps<any>
   maxWidth?: number | string
   type?: 'text' | 'password'
+  placeholder?: string
+  helperText?: string
 }) => {
   const value = formik.values[name]
   const error = formik.errors[name] as string | undefined
@@ -43,7 +47,9 @@ export const Input = ({
         name={name}
         id={name}
         disabled={formik.isSubmitting}
+        placeholder={placeholder}
       />
+      {helperText && !invalid && <div className={css.helper}>{helperText}</div>}
       {invalid && <div className={css.error}>{error}</div>}
     </div>
   )
