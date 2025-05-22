@@ -111,6 +111,9 @@ importers:
 
   backend:
     dependencies:
+      '@ideanick/shared':
+        specifier: workspace:*
+        version: link:../shared
       '@ideanick/webapp':
         specifier: workspace:*
         version: link:../webapp
@@ -209,11 +212,24 @@ importers:
         specifier: ^4.19.3
         version: 4.19.4
 
+  shared:
+    dependencies:
+      zod:
+        specifier: ^3.21.4
+        version: 3.25.17
+    devDependencies:
+      '@types/node':
+        specifier: 20.3.1
+        version: 20.3.1
+
   webapp:
     dependencies:
       '@ideanick/backend':
         specifier: workspace:*
         version: link:../backend
+      '@ideanick/shared':
+        specifier: workspace:*
+        version: link:../shared
       '@tanstack/react-query':
         specifier: 4.27.0
         version: 4.27.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -1830,6 +1846,9 @@ packages:
 
   '@types/ms@2.1.0':
     resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
+
+  '@types/node@20.3.1':
+    resolution: {integrity: sha512-EhcH/wvidPy1WeML3TtYFGR83UzjxeWRen9V402T8aUGYsCHOmfoisV3ZSg03gAFIbLq8TnWOJ0f4cALtnSEUg==}
 
   '@types/node@22.15.21':
     resolution: {integrity: sha512-EV/37Td6c+MgKAbkcLG6vqZ2zEYHD7bvSrzqqs2RIhbA6w3x+Dqz8MZM3sP6kGTeLrdoOgKZe+Xja7tUB2DNkQ==}
@@ -6615,6 +6634,8 @@ snapshots:
   '@types/mime@1.3.5': {}
 
   '@types/ms@2.1.0': {}
+
+  '@types/node@20.3.1': {}
 
   '@types/node@22.15.21':
     dependencies:

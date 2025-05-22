@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@ideanick/backend": "workspace:*",
+    "@ideanick/shared": "workspace:*",
     "@tanstack/react-query": "4.27.0",
     "@trpc/client": "^10.45.2",
     "@trpc/react-query": "10.44.0",
