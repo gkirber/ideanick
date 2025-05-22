@@ -8,6 +8,7 @@ import Handlebars from 'handlebars'
 import _ from 'lodash'
 import { sendEmailThroughBrevo } from './brevo'
 import { env } from './env'
+import { logger } from './logger'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -49,7 +50,7 @@ const sendEmail = async ({
     }
     const html = await getEmailHtml(templateName, fullTemplateVaraibles)
     const { loggableResponse } = await sendEmailThroughBrevo({ to, html, subject })
-    console.info('sendEmail', {
+    logger.info('sendEmail', {
       to,
       templateName,
       templateVariables,
@@ -57,7 +58,7 @@ const sendEmail = async ({
     })
     return { ok: true }
   } catch (error) {
-    console.error(error)
+    logger.error(error)
     return { ok: false }
   }
 }

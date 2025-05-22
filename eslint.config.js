@@ -63,7 +63,6 @@ export default [
           skipStrings: true,
         },
       ],
-      'no-console': ['error', { allow: ['info', 'error', 'warn'] }],
     },
   },
 ]
