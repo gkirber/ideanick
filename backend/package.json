@@ -25,6 +25,7 @@
     "@ideanick/shared": "workspace:*",
     "@ideanick/webapp": "workspace:*",
     "@prisma/client": "^6.6.0",
+    "@sentry/node": "^9.22.0",
     "@trpc/client": "^10.45.2",
     "@trpc/server": "^10.45.2",
     "axios": "^1.9.0",

@@ -33,6 +33,7 @@ void (async () => {
     expressApp.listen(env.PORT, () => {
       logger.info('express', `Listening at http://localhost:${env.PORT}`)
     })
+    throw new Error('Unexpected Error 1')
   } catch (error) {
     logger.error('app', error)
     await ctx?.stop()

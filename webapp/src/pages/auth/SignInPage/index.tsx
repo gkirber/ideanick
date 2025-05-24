@@ -25,15 +25,11 @@ export const SignInPage = withPageWrapper({
     },
     validationSchema: zSignInTrpcInput,
     onSubmit: async (values) => {
-      try {
-        const { token } = await signIn.mutateAsync(values)
-        Cookies.set('token', token, { expires: 99999 })
-        await trpcUtils.invalidate()
-        await trpcUtils.getMe.invalidate()
-        navigate(getAllIdeasRoute())
-      } catch (error) {
-        console.error('Sign in error:', error)
-      }
+      const { token } = await signIn.mutateAsync(values)
+      Cookies.set('token', token, { expires: 99999 })
+      await trpcUtils.invalidate()
+      await trpcUtils.getMe.invalidate()
+      navigate(getAllIdeasRoute())
     },
     resetOnSuccess: false,
   })
