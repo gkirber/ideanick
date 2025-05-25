@@ -1,14 +1,11 @@
-import path from 'path'
-import { fileURLToPath } from 'url'
-
 import { RewriteFrames } from '@sentry/integrations'
 import * as Sentry from '@sentry/node'
 
 import { env } from './env'
 import { type LoggerMetaData } from './logger'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+// Використовуємо process.cwd() як базовий шлях
+const rootPath = process.cwd()
 
 if (env.BACKEND_SENTRY_DSN) {
   Sentry.init({
@@ -18,16 +15,13 @@ if (env.BACKEND_SENTRY_DSN) {
     normalizeDepth: 10,
     integrations: [
       new RewriteFrames({
-        root: path.resolve(__dirname, '../../..'),
+        root: rootPath,
       }),
     ],
   })
 }
 
-export const sentryCaptureException = (
-  error: Error,
-  prettifiedMetaData?: LoggerMetaData
-) => {
+export const sentryCaptureException = (error: Error, prettifiedMetaData?: LoggerMetaData) => {
   if (env.BACKEND_SENTRY_DSN) {
     Sentry.captureException(error, prettifiedMetaData)
   }

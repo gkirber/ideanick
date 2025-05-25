@@ -1,6 +1,5 @@
 import { promises as fs } from 'fs'
 import path from 'path'
-import { fileURLToPath } from 'url'
 
 import { getNewIdeaRoute } from '@ideanick/webapp/src/lib/routes'
 import { type Idea, type User } from '@prisma/client'
@@ -12,11 +11,11 @@ import { makeRequestToBrevo } from './brevo'
 import { env } from './env'
 import { logger } from './logger'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+// Використовуємо process.cwd() як базовий шлях
+const rootPath = process.cwd()
 
 const getHbrTemplates = _.memoize(async () => {
-  const htmlPathsPattern = path.resolve(__dirname, '../emails/dist/**/*.html')
+  const htmlPathsPattern = path.resolve(rootPath, 'src/emails/dist/**/*.html')
   const htmlPaths = fg.sync(htmlPathsPattern)
   const hbrTemplates: Record<string, HandlebarsTemplateDelegate> = {}
   for (const htmlPath of htmlPaths) {

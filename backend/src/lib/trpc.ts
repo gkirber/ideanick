@@ -1,6 +1,7 @@
 import { initTRPC } from '@trpc/server'
 import * as trpcExpress from '@trpc/server/adapters/express'
 import { type Express } from 'express'
+import superjson from 'superjson'
 import { expressHandler } from 'trpc-playground/handlers/express'
 
 import { type TrpcRouter } from '../router'
@@ -10,18 +11,15 @@ import { type AppContext } from './ctx'
 import { ExpectedError } from './error'
 import { logger } from './logger'
 
-const superjson = (await import('superjson')).default
+export const getTrpcContext = ({ appContext, req }: { appContext: AppContext; req: ExpressRequest }) => ({
+  ...appContext,
+  me: req.user || null,
+})
 
 const getCreateTrpcContext =
   (appContext: AppContext) =>
-  ({ req }: trpcExpress.CreateExpressContextOptions) => {
-    const me = (req as ExpressRequest).user || null
-
-    return {
-      ...appContext,
-      me,
-    }
-  }
+  ({ req }: trpcExpress.CreateExpressContextOptions) =>
+    getTrpcContext({ appContext, req: req as ExpressRequest })
 
 export type TrpcContext = ReturnType<ReturnType<typeof getCreateTrpcContext>>
 
