@@ -40,25 +40,30 @@ interface EmailTemplateData {
 
 const sendEmail = async ({
   to,
-  templateId,
+  templateName,
   templateData,
+  subject,
 }: {
   to: string
-  templateId: number
+  templateName: string
   templateData: EmailTemplateData
+  subject: string
 }) => {
+  const html = await _getEmailHtml(templateName, templateData as Record<string, string>)
+
   const { loggableResponse } = await makeRequestToBrevo({
     path: 'smtp/email',
     data: {
       to: [{ email: to }],
-      templateId,
-      params: templateData,
+      subject,
+      htmlContent: html,
+      sender: { email: env.FROM_EMAIL_ADDRESS, name: env.FROM_EMAIL_NAME },
     },
   })
 
   logger.info('email', 'Email sent', {
     to,
-    templateId,
+    templateName,
     templateData,
     response: loggableResponse,
   })
@@ -67,10 +72,12 @@ const sendEmail = async ({
 export const sendWelcomeEmail = async ({ user }: { user: Pick<User, 'nick' | 'email'> }) => {
   return await sendEmail({
     to: user.email,
-    templateId: env.BREVO_WELCOME_TEMPLATE_ID,
+    templateName: 'welcome',
+    subject: 'Ласкаво просимо до IdeaNick!',
     templateData: {
       userNick: user.nick,
       addIdeaUrl: `${getNewIdeaRoute({ abs: true })}`,
+      homeUrl: env.WEBAPP_URL,
     },
   })
 }
@@ -78,9 +85,11 @@ export const sendWelcomeEmail = async ({ user }: { user: Pick<User, 'nick' | 'em
 export const sendIdeaBlockedEmail = async ({ user, idea }: { user: Pick<User, 'email'>; idea: Pick<Idea, 'nick'> }) => {
   return await sendEmail({
     to: user.email,
-    templateId: env.BREVO_IDEA_BLOCKED_TEMPLATE_ID,
+    templateName: 'IdeaBlocked',
+    subject: 'Вашу ідею заблоковано',
     templateData: {
       ideaNick: idea.nick,
+      homeUrl: env.WEBAPP_URL,
     },
   })
 }
@@ -88,10 +97,12 @@ export const sendIdeaBlockedEmail = async ({ user, idea }: { user: Pick<User, 'e
 export const sendMostLikedIdeasEmail = async (user: User, ideasCount: number) => {
   await sendEmail({
     to: user.email,
-    templateId: env.BREVO_MOST_LIKED_IDEAS_TEMPLATE_ID,
+    templateName: 'mostLikedIdeas',
+    subject: 'Найпопулярніші ідеї тижня',
     templateData: {
       name: user.name,
       ideasCount,
+      homeUrl: env.WEBAPP_URL,
     },
   })
 }
