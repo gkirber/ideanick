@@ -6,9 +6,9 @@ type TestData = {
   a: number
   b: string
   c?: boolean
-  d: null
-  e: undefined
-  f: TestData | null
+  d?: null
+  e?: undefined
+  f?: TestData | null
   nested?: TestData
 }
 
@@ -132,7 +132,7 @@ describe('deepMap', () => {
   })
 
   it('should handle null values', () => {
-    const obj: TestData = {
+    const obj: Partial<TestData> = {
       a: 1,
       b: 'test',
       c: true,
@@ -147,11 +147,11 @@ describe('deepMap', () => {
   })
 
   it('deepMap should handle undefined values', () => {
-    const input: TestData = {
+    const input: Partial<TestData> = {
       a: 1,
       b: 'test',
     }
-    const result = deepMap(input, (value: unknown) => value)
+    const result = deepMap(input, ({ value }) => value)
 
     expect(result).toEqual(input)
   })

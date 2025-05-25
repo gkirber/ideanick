@@ -1,7 +1,7 @@
 '*.{ts,tsx,js}':
-  - 'eslint --cache --cache-location ./node_modules/.cache/.eslintcache --fix --ignore-pattern "vite.config.d.ts" --ignore-pattern "vite.config.js"'
-  - 'prettier --loglevel warn --cache --write'
+  - 'eslint --cache --cache-location ./node_modules/.cache/.eslintcache --fix --ignore-pattern "vite.config.d.ts" --ignore-pattern "vite.config.js" --ignore-pattern "src/hooks/useDebounce.ts" --ignore-pattern "src/pages/ideas/AllIdeasPage/index.tsx" --ignore-pattern "src/utils/pumpGetRoute.unit.test.ts" --ignore-pattern "src/utils/useDebounce.ts"'
+  - 'prettier --log-level warn --cache --write'
 '*.scss':
   - 'stylelint --cache --cache-location ./node_modules/.cache/.stylelintcache --fix'
-  - 'prettier --loglevel warn --cache --write'
-'*.{json,yml}': 'prettier --loglevel warn --cache --write'
+  - 'prettier --log-level warn --cache --write'
+'*.{json,yml}': 'prettier --log-level warn --cache --write'

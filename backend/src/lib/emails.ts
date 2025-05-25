@@ -56,8 +56,7 @@ const sendEmail = async ({
     },
   })
 
-  logger.info('Email sent', {
-    logType: 'email',
+  logger.info('email', 'Email sent', {
     to,
     templateId,
     templateData,

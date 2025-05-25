@@ -41,6 +41,14 @@ export const applyPassportToExpressApp = (expressApp: Express, ctx: AppContext):
         try {
           const user = await ctx.prisma.user.findUnique({
             where: { id: jwtPayload.id },
+            select: {
+              id: true,
+              email: true,
+              nick: true,
+              name: true,
+              createdAt: true,
+              permissions: true,
+            },
           })
 
           if (!user) {
@@ -65,21 +73,30 @@ export const applyPassportToExpressApp = (expressApp: Express, ctx: AppContext):
         try {
           const user = await prisma.user.findUnique({
             where: { email },
+            select: {
+              id: true,
+              email: true,
+              nick: true,
+              name: true,
+              createdAt: true,
+              permissions: true,
+              password: true,
+            },
           })
 
           if (!user) {
             return done(null, false, { message: 'Incorrect email or password' })
           }
 
-          const passwordHash = await getPasswordHash(password, user.salt)
+          const passwordHash = await getPasswordHash(password)
 
-          if (passwordHash !== user.passwordHash) {
+          if (passwordHash !== user.password) {
             return done(null, false, { message: 'Incorrect email or password' })
           }
 
           return done(null, user)
         } catch (error) {
-          logger.error('passport', error)
+          logger.error('passport', error as Error)
           return done(error as Error)
         }
       }

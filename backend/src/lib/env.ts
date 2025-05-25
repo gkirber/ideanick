@@ -18,7 +18,26 @@ const zEnv = z.object({
   DEBUG: zEnvNonemptyTrimmed.optional().default('false'),
   BACKEND_SENTRY_DSN: zEnvNonemptyTrimmedRequiredOnNotLocal,
   SOURCE_VERSION: zEnvNonemptyTrimmedRequiredOnNotLocal,
+  BREVO_WELCOME_TEMPLATE_ID: z.number(),
+  BREVO_IDEA_BLOCKED_TEMPLATE_ID: z.number(),
+  BREVO_MOST_LIKED_IDEAS_TEMPLATE_ID: z.number(),
 })
 
 // eslint-disable-next-line node/no-process-env
 export const env = zEnv.parse(process.env)
+
+export interface Env {
+  HOST_ENV: 'local' | 'production'
+  PORT: string
+  DATABASE_URL: string
+  JWT_SECRET: string
+  PASSWORD_SALT: string
+  INITIAL_ADMIN_PASSWORD: string
+  WEBAPP_URL: string
+  FROM_EMAIL_NAME: string
+  BREVO_API_KEY: string
+  BREVO_WELCOME_TEMPLATE_ID: number
+  BREVO_IDEA_BLOCKED_TEMPLATE_ID: number
+  BREVO_MOST_LIKED_IDEAS_TEMPLATE_ID: number
+  SOURCE_VERSION?: string
+}

@@ -97,7 +97,7 @@ export const logger = {
     const isTrpcExpectedError = error instanceof TRPCError && error.cause instanceof ExpectedError
     const prettifiedMetaData = prettifyMeta(meta)
     if (!isNativeExpectedError && !isTrpcExpectedError) {
-      sentryCaptureException(error, prettifiedMetaData)
+      sentryCaptureException(error as Error, prettifiedMetaData)
     }
     if (!debug.enabled(`ideanick:${logType}`)) {
       return
@@ -105,7 +105,7 @@ export const logger = {
     const serializedError = serializeError(error)
     winstonLogger.error(serializedError.message || 'Unknown error', {
       logType,
-      error,
+      error: error as Error,
       errorStack: serializedError.stack,
       ...prettifiedMetaData,
     })

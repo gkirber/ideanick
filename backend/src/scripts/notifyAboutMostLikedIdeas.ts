@@ -1,4 +1,4 @@
-import { type Idea } from '@prisma/client'
+import { type Idea, type User } from '@prisma/client'
 
 import { type AppContext } from '../lib/ctx'
 import { sendMostLikedIdeasEmail } from '../lib/emails'
@@ -26,10 +26,15 @@ export const notifyAboutMostLikedIdeas = async (ctx: AppContext) => {
   }
   const users = await ctx.prisma.user.findMany({
     select: {
+      id: true,
       email: true,
+      name: true,
+      nick: true,
+      createdAt: true,
+      permissions: true,
     },
   })
   for (const user of users) {
-    await sendMostLikedIdeasEmail({ user, ideas: mostLikedIdeas })
+    await sendMostLikedIdeasEmail(user as User, mostLikedIdeas.length)
   }
 }
