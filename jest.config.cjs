@@ -19,4 +19,5 @@ module.exports = {
     '^superjson$': '<rootDir>/src/test/mocks/superjson.ts',
     '^@ideanick/webapp/src/lib/routes$': '<rootDir>/src/test/mocks/routes.ts',
   },
+  transformIgnorePatterns: ['node_modules/(?!(@ideanick)/)'],
 }

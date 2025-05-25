@@ -4,10 +4,13 @@ import * as Sentry from '@sentry/node'
 import { env } from './env'
 import { type LoggerMetaData } from './logger'
 
+
 // Використовуємо process.cwd() як базовий шлях
 const rootPath = process.cwd()
 
-if (env.BACKEND_SENTRY_DSN) {
+const isSentryEnabled = env.BACKEND_SENTRY_DSN && env.NODE_ENV !== 'test'
+
+if (isSentryEnabled) {
   Sentry.init({
     dsn: env.BACKEND_SENTRY_DSN,
     environment: env.HOST_ENV,
