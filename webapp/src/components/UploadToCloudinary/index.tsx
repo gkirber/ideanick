@@ -11,9 +11,7 @@ import { trpc } from '../../lib/trpc'
 import { Button, Buttons } from '../Button'
 import css from './index.module.scss'
 
-type CloudinaryFormValues = {
-  [key: string]: string | null | undefined
-}
+type CloudinaryFormValues = Record<string, string | null | undefined>
 
 export const useUploadToCloudinary = (type: CloudinaryUploadTypeName) => {
   const prepareCloudinaryUpload = trpc.prepareCloudinaryUpload.useMutation()

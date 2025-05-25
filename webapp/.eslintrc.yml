@@ -9,6 +9,7 @@ parserOptions:
 plugins:
   - '@typescript-eslint'
   - import
+  - react-hooks
 rules:
   no-console:
     - error
@@ -16,6 +17,8 @@ rules:
         - info
         - error
         - warn
+  'react-hooks/rules-of-hooks': error
+  'react-hooks/exhaustive-deps': warn
   '@typescript-eslint/no-restricted-imports':
     - error
     - patterns:
