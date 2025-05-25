@@ -1,5 +1,5 @@
+import { pick } from '@ideanick/shared/src/pick'
 import axios, { type AxiosResponse } from 'axios'
-import _ from 'lodash'
 
 import { env } from './env'
 
@@ -47,7 +47,7 @@ export const makeRequestToBrevo = async ({
   })
   return {
     originalResponse: response,
-    loggableResponse: _.pick(response, ['status', 'statusText', 'data']),
+    loggableResponse: pick(response, ['status', 'statusText', 'data']),
   }
 }
 

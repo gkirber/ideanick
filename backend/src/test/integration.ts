@@ -2,6 +2,7 @@ import '../lib/brevo.mock'
 import '../lib/emails/utils.mock'
 import '../lib/sentry.mock'
 
+import { omit } from '@ideanick/shared/src/omit'
 import { type Idea, type User } from '@prisma/client'
 import _ from 'lodash'
 
@@ -12,7 +13,6 @@ import { trpcRouter } from '../router'
 import { deepMap, type Value } from '../utils/deepMap'
 import { getPasswordHash } from '../utils/getPasswordHash'
 import { type ExpressRequest } from '../utils/types'
-
 
 if (env.NODE_ENV !== 'test') {
   throw new Error('Run integration tests only with NODE_ENV=test')
@@ -67,7 +67,7 @@ export const createUser = async ({ user = {}, number = 1 }: { user?: Partial<Use
       nick: `user${number}`,
       email: `user${number}@example.com`,
       password: getPasswordHash(user.password || '1234'),
-      ..._.omit(user, ['password']),
+      ...omit(user, ['password']),
     },
   })
 }

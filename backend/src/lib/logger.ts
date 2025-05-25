@@ -1,5 +1,6 @@
 import { EOL } from 'os'
 
+import { omit } from '@ideanick/shared/src/omit'
 import { TRPCError } from '@trpc/server'
 import debug from 'debug'
 import _ from 'lodash'
@@ -49,14 +50,7 @@ export const winstonLogger = winston.createLogger({
               const levelAndType = `${info.level} ${info.logType ?? ''}`.trim()
               const topMessage = `${setColor(levelAndType)} ${pc.green(info.timestamp ?? '')}${EOL}${info.message ?? ''}`
 
-              const visibleMessageTags = _.omit(info, [
-                'level',
-                'logType',
-                'timestamp',
-                'message',
-                'service',
-                'hostEnv',
-              ])
+              const visibleMessageTags = omit(info, ['level', 'logType', 'timestamp', 'message', 'service', 'hostEnv'])
 
               const stringifiedMeta = _.trim(
                 yaml.stringify(visibleMessageTags, (_k, v) => (_.isFunction(v) ? 'Function' : v))
