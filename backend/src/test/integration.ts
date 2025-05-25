@@ -1,3 +1,7 @@
+import '../lib/brevo.mock'
+import '../lib/emails/utils.mock'
+import '../lib/sentry.mock'
+
 import { type Idea, type User } from '@prisma/client'
 import _ from 'lodash'
 
@@ -35,7 +39,7 @@ export const withoutNoize = <T extends Value>(input: T): T => {
   return deepMap<T>(input, ({ value }) => {
     if (_.isObject(value) && !_.isArray(value)) {
       return _.entries(value).reduce((acc, [objectKey, objectValue]: [string, unknown]) => {
-        if ([/Id$/, /At$/].some((regex) => regex.test(objectKey)) && objectKey !== 'id') {
+        if ([/^id$/, /Id$/, /At$/, /^url$/].some((regex) => regex.test(objectKey))) {
           return acc
         }
         if (objectKey === 'id' && typeof objectValue === 'string') {
