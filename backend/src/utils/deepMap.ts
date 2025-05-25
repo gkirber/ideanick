@@ -1,7 +1,7 @@
 import _ from 'lodash'
 
 type ReplaceFn = ({ path, key, value }: { path: string; key: string; value: Value }) => Value
-type Value =
+export type Value =
   | object
   | number
   | string

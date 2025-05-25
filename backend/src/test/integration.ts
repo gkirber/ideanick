@@ -4,7 +4,7 @@ import _ from 'lodash'
 import { createAppContext } from '../lib/ctx'
 import { getTrpcContext } from '../lib/trpc'
 import { trpcRouter } from '../router'
-import { deepMap } from '../utils/deepMap'
+import { deepMap, type Value } from '../utils/deepMap'
 import { getPasswordHash } from '../utils/getPasswordHash'
 import { type ExpressRequest } from '../utils/types'
 
@@ -22,11 +22,11 @@ export const getTrpcCaller = (user?: User) => {
   const req = { user } as ExpressRequest
   return trpcRouter.createCaller(getTrpcContext({ appContext, req }))
 }
-export const withoutNoize = <T>(input: T): T => {
+export const withoutNoize = <T extends Value>(input: T): T => {
   const idMap = new Map<string, string>()
   let counter = 1
 
-  return deepMap(input, ({ value }) => {
+  return deepMap<T>(input, ({ value }) => {
     if (_.isObject(value) && !_.isArray(value)) {
       return _.entries(value).reduce((acc, [objectKey, objectValue]: [string, unknown]) => {
         if ([/Id$/, /At$/].some((regex) => regex.test(objectKey)) && objectKey !== 'id') {
