@@ -1,8 +1,18 @@
 extends:
   - ../.eslintrc.yml
+
 parserOptions:
   project: tsconfig.json
   tsconfigRootDir: .
+
+settings:
+  import/resolver:
+    node:
+      extensions:
+        - '.js'
+        - '.ts'
+        - '.tsx'
+
 rules:
   no-console: error
   '@typescript-eslint/no-explicit-any': error
@@ -18,3 +28,9 @@ rules:
       newlines-between: always
       alphabetize:
         order: asc
+  import/no-restricted-paths:
+    - error
+    - zones:
+        - target: './src/**/!(*.integration.test.ts)'
+          from: './src/test'
+          message: 'Import something from test dir only inside integration tests'
