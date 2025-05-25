@@ -1,6 +1,7 @@
 import { ExpectedError } from '../../../lib/error'
 import { toClientMe } from '../../../lib/models'
 import { trpcLoggedProcedure } from '../../../lib/trpc'
+
 import { zUpdateProfileTrpcInput } from './input'
 
 export const updateProfileTrpcRoute = trpcLoggedProcedure

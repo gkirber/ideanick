@@ -1,13 +1,27 @@
 import axios, { type AxiosResponse } from 'axios'
 import _ from 'lodash'
+
 import { env } from './env'
 
-const makeRequestToBrevo = async ({
+interface BrevoRequestData {
+  subject?: string
+  htmlContent?: string
+  sender?: {
+    email: string
+    name: string
+  }
+  to?: Array<{
+    email: string
+  }>
+  [key: string]: unknown
+}
+
+export const makeRequestToBrevo = async ({
   path,
   data,
 }: {
   path: string
-  data: Record<string, any>
+  data: BrevoRequestData
 }): Promise<{
   originalResponse?: AxiosResponse
   loggableResponse: Pick<AxiosResponse, 'status' | 'statusText' | 'data'>

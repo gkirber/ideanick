@@ -3,14 +3,23 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
+    "test": "jest",
     "types": "tsc --noEmit --project ./tsconfig.json",
-    "lint": "eslint --cache --cache-location ./node_modules/.cache/.eslintcache --ext .ts .",
+    "lint": "eslint --ext .ts .",
     "prettify": "prettier --loglevel warn --cache --write '{src/**/*,*}.{ts,tsx,js,json,yml,scss}' '!**/{node_modules,dist}/**/*'"
   },
   "dependencies": {
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@types/node": "20.3.1"
+    "@types/node": "20.3.1",
+    "@typescript-eslint/eslint-plugin": "^8.32.1",
+    "@typescript-eslint/parser": "^8.32.1",
+    "eslint": "8.56.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-import-resolver-typescript": "^4.4.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jest": "^28.11.0",
+    "prettier": "^3.5.3"
   }
 }

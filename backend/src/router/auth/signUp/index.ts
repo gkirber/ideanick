@@ -3,6 +3,7 @@ import { ExpectedError } from '../../../lib/error'
 import { trpcLoggedProcedure } from '../../../lib/trpc'
 import { getPasswordHash } from '../../../utils/getPasswordHash'
 import { signJWT } from '../../../utils/signJWT'
+
 import { zSignUpTrpcInput } from './input'
 
 export const signUpTrpcRoute = trpcLoggedProcedure.input(zSignUpTrpcInput).mutation(async ({ ctx, input }) => {

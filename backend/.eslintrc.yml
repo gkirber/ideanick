@@ -1,4 +1,20 @@
+extends:
+  - ../.eslintrc.yml
 parserOptions:
-  project: ./tsconfig.json
+  project: tsconfig.json
+  tsconfigRootDir: .
 rules:
   no-console: error
+  '@typescript-eslint/no-explicit-any': error
+  import/order:
+    - error
+    - groups:
+        - builtin
+        - external
+        - internal
+        - parent
+        - sibling
+        - index
+      newlines-between: always
+      alphabetize:
+        order: asc

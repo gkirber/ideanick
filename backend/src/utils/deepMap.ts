@@ -1,7 +1,16 @@
 import _ from 'lodash'
 
 type ReplaceFn = ({ path, key, value }: { path: string; key: string; value: Value }) => Value
-type Value = Object | number | string | boolean | null | undefined | Function | Symbol | any[]
+type Value =
+  | object
+  | number
+  | string
+  | boolean
+  | null
+  | undefined
+  | ((...args: unknown[]) => unknown)
+  | symbol
+  | Value[]
 
 const recursion = ({
   input,
@@ -12,15 +21,15 @@ const recursion = ({
 }: {
   input: Value
   replaceFn: ReplaceFn
-  seen: WeakSet<any>
+  seen: WeakSet<object>
   pathStartsWith: string
   parentKey: string
 }): Value => {
   if (['object', 'function', 'symbol'].includes(typeof input) && input !== null) {
-    if (seen.has(input)) {
+    if (seen.has(input as object)) {
       return '!!!CIRCULAR!!!'
     } else {
-      seen.add(input)
+      seen.add(input as object)
     }
   }
   const result = replaceFn({ path: pathStartsWith.replace(/\.$/, ''), key: parentKey, value: input })
@@ -39,7 +48,7 @@ const recursion = ({
     )
   }
   if (_.isObject(result)) {
-    const object: any = {}
+    const object: Record<string, Value> = {}
     for (const [key, value] of Object.entries(result)) {
       object[key] = recursion({
         input: value,
@@ -55,7 +64,7 @@ const recursion = ({
 }
 
 export const deepMap = <T = Value>(input: Value, replaceFn: ReplaceFn): T => {
-  const seen = new WeakSet()
+  const seen = new WeakSet<object>()
   const mappedObject = recursion({ input, replaceFn, seen, pathStartsWith: '', parentKey: '' })
   const clonedMappedObject = _.cloneDeep(mappedObject)
   return clonedMappedObject as T

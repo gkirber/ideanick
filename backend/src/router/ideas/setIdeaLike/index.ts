@@ -1,4 +1,5 @@
 import { trpcLoggedProcedure } from '../../../lib/trpc'
+
 import { zSetIdeaLikeIdeaTrpcInput } from './input'
 
 export const setIdeaLikeTrpcRoute = trpcLoggedProcedure

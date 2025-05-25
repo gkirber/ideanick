@@ -1,12 +1,14 @@
 import { promises as fs } from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import { getNewIdeaRoute, getViewIdeaRoute } from '@ideanick/webapp/src/lib/routes'
+
+import { getNewIdeaRoute } from '@ideanick/webapp/src/lib/routes'
 import { type Idea, type User } from '@prisma/client'
 import fg from 'fast-glob'
 import Handlebars from 'handlebars'
 import _ from 'lodash'
-import { sendEmailThroughBrevo } from './brevo'
+
+import { makeRequestToBrevo } from './brevo'
 import { env } from './env'
 import { logger } from './logger'
 
@@ -25,54 +27,49 @@ const getHbrTemplates = _.memoize(async () => {
   return hbrTemplates
 })
 
-const getEmailHtml = async (templateName: string, templateVariables: Record<string, string> = {}) => {
+const _getEmailHtml = async (templateName: string, templateVariables: Record<string, string> = {}) => {
   const hbrTemplates = await getHbrTemplates()
   const hbrTemplate = hbrTemplates[templateName]
   const html = hbrTemplate(templateVariables)
   return html
 }
 
+interface EmailTemplateData {
+  [key: string]: string | number | boolean | null | undefined
+}
+
 const sendEmail = async ({
   to,
-  subject,
-  templateName,
-  templateVariables = {},
+  templateId,
+  templateData,
 }: {
   to: string
-  subject: string
-  templateName: string
-  templateVariables?: Record<string, any>
+  templateId: number
+  templateData: EmailTemplateData
 }) => {
-  try {
-    const fullTemplateVaraibles = {
-      ...templateVariables,
-      homeUrl: env.WEBAPP_URL,
-    }
-    const html = await getEmailHtml(templateName, fullTemplateVaraibles)
-    const { loggableResponse } = await sendEmailThroughBrevo({ to, html, subject })
-    logger.info('email', 'sendEmail', {
-      to,
-      templateName,
-      templateVariables,
-      response: loggableResponse,
-    })
-    return { ok: true }
-  } catch (error) {
-    logger.error('email', error, {
-      to,
-      templateName,
-      templateVariables,
-    })
-    return { ok: false }
-  }
+  const { loggableResponse } = await makeRequestToBrevo({
+    path: 'smtp/email',
+    data: {
+      to: [{ email: to }],
+      templateId,
+      params: templateData,
+    },
+  })
+
+  logger.info('Email sent', {
+    logType: 'email',
+    to,
+    templateId,
+    templateData,
+    response: loggableResponse,
+  })
 }
 
 export const sendWelcomeEmail = async ({ user }: { user: Pick<User, 'nick' | 'email'> }) => {
   return await sendEmail({
     to: user.email,
-    subject: 'Thanks For Registration!',
-    templateName: 'welcome',
-    templateVariables: {
+    templateId: env.BREVO_WELCOME_TEMPLATE_ID,
+    templateData: {
       userNick: user.nick,
       addIdeaUrl: `${getNewIdeaRoute({ abs: true })}`,
     },
@@ -82,27 +79,20 @@ export const sendWelcomeEmail = async ({ user }: { user: Pick<User, 'nick' | 'em
 export const sendIdeaBlockedEmail = async ({ user, idea }: { user: Pick<User, 'email'>; idea: Pick<Idea, 'nick'> }) => {
   return await sendEmail({
     to: user.email,
-    subject: 'Your Idea Blocked!',
-    templateName: 'ideaBlocked',
-    templateVariables: {
+    templateId: env.BREVO_IDEA_BLOCKED_TEMPLATE_ID,
+    templateData: {
       ideaNick: idea.nick,
     },
   })
 }
 
-export const sendMostLikedIdeasEmail = async ({
-  user,
-  ideas,
-}: {
-  user: Pick<User, 'email'>
-  ideas: Array<Pick<Idea, 'nick' | 'name'>>
-}) => {
-  return await sendEmail({
+export const sendMostLikedIdeasEmail = async (user: User, ideasCount: number) => {
+  await sendEmail({
     to: user.email,
-    subject: 'Most Liked Ideas!',
-    templateName: 'mostLikedIdeas',
-    templateVariables: {
-      ideas: ideas.map((idea) => ({ name: idea.name, url: getViewIdeaRoute({ abs: true, ideaNick: idea.nick }) })),
+    templateId: env.BREVO_MOST_LIKED_IDEAS_TEMPLATE_ID,
+    templateData: {
+      name: user.name,
+      ideasCount,
     },
   })
 }

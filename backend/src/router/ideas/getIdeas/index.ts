@@ -1,5 +1,7 @@
 import _ from 'lodash'
+
 import { trpcLoggedProcedure } from '../../../lib/trpc'
+
 import { zGetIdeasTrpcInput } from './input'
 
 export const getIdeasTrpcRoute = trpcLoggedProcedure.input(zGetIdeasTrpcInput).query(async ({ ctx, input }) => {

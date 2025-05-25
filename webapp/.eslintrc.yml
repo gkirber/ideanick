@@ -1,13 +1,16 @@
 extends:
-  - react-app
   - ../.eslintrc.yml
+  - plugin:@typescript-eslint/recommended
+parser: '@typescript-eslint/parser'
 parserOptions:
-  project: ./tsconfig.json
-overrides:
-  - files:
-      - vite.config.ts
-    parserOptions:
-      project: ./tsconfig.node.json
+  ecmaVersion: 2022
+  sourceType: module
+  tsconfigRootDir: .
+  project:
+    - tsconfig.json
+    - tsconfig.node.json
+plugins:
+  - '@typescript-eslint'
 rules:
   no-console:
     - error

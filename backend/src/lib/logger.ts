@@ -1,4 +1,5 @@
 import { EOL } from 'os'
+
 import { TRPCError } from '@trpc/server'
 import debug from 'debug'
 import _ from 'lodash'
@@ -7,7 +8,9 @@ import { serializeError } from 'serialize-error'
 import { MESSAGE } from 'triple-beam'
 import winston, { format } from 'winston'
 import * as yaml from 'yaml'
+
 import { deepMap } from '../utils/deepMap'
+
 import { env } from './env'
 import { ExpectedError } from './error'
 import { sentryCaptureException } from './sentry'
@@ -17,7 +20,7 @@ type TransformableInfo = {
   message: string
   timestamp?: string
   logType?: string
-  [key: string]: any
+  [key: string]: unknown
 }
 
 export const winstonLogger = winston.createLogger({
@@ -72,7 +75,7 @@ export const winstonLogger = winston.createLogger({
   ],
 })
 
-export type LoggerMetaData = Record<string, any> | undefined
+export type LoggerMetaData = Record<string, unknown> | undefined
 const prettifyMeta = (meta: LoggerMetaData): LoggerMetaData => {
   return deepMap(meta, ({ key, value }) => {
     if (['email', 'password', 'newPassword', 'oldPassword', 'token', 'text', 'description'].includes(key)) {
@@ -89,7 +92,7 @@ export const logger = {
     }
     winstonLogger.info(message, { logType, ...prettifyMeta(meta) })
   },
-  error: (logType: string, error: any, meta?: LoggerMetaData) => {
+  error: (logType: string, error: Error | unknown, meta?: LoggerMetaData) => {
     const isNativeExpectedError = error instanceof ExpectedError
     const isTrpcExpectedError = error instanceof TRPCError && error.cause instanceof ExpectedError
     const prettifiedMetaData = prettifyMeta(meta)

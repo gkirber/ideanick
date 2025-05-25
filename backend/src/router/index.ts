@@ -1,5 +1,7 @@
 import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server'
+
 import { createTrpcRouter } from '../lib/trpc'
+
 // @index('./**/index.ts', f => `import { ${f.path.split('/').slice(0, -1).pop()}TrpcRoute } from '${f.path.split('/').slice(0, -1).join('/')}'`)
 import { getMeTrpcRoute } from './auth/getMe'
 import { signInTrpcRoute } from './auth/signIn'

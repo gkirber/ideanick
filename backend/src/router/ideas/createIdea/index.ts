@@ -1,5 +1,6 @@
 import { ExpectedError } from '../../../lib/error'
 import { trpcLoggedProcedure } from '../../../lib/trpc'
+
 import { zCreateIdeaTrpcInput } from './input'
 
 export const createIdeaTrpcRoute = trpcLoggedProcedure.input(zCreateIdeaTrpcInput).mutation(async ({ input, ctx }) => {

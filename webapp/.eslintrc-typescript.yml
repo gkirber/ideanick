@@ -1,0 +1,9 @@
+parser: '@typescript-eslint/parser'
+parserOptions:
+  project:
+    - '/Users/GKirber/INC/ideanick/webapp/tsconfig.json'
+    - '/Users/GKirber/INC/ideanick/webapp/tsconfig.node.json'
+plugins:
+  - '@typescript-eslint'
+extends:
+  - 'plugin:@typescript-eslint/recommended'

@@ -1,6 +1,7 @@
 import { ExpectedError } from '../../../lib/error'
 import { trpcLoggedProcedure } from '../../../lib/trpc'
 import { getPasswordHash } from '../../../utils/getPasswordHash'
+
 import { zUpdatePasswordTrpcInput } from './input'
 
 export const updatePasswordTrpcRoute = trpcLoggedProcedure

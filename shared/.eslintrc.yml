@@ -1,2 +1,8 @@
+extends:
+  - ../.eslintrc.yml
 parserOptions:
-  project: ./tsconfig.json
+  project: tsconfig.json
+  tsconfigRootDir: .
+rules:
+  node/no-process-env: off
+  '@typescript-eslint/no-explicit-any': error

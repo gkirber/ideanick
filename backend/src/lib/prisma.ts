@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+
 import { env } from './env'
 import { logger } from './logger'
 
@@ -51,3 +52,5 @@ export const createPrismaClient = () => {
 
   return extendedPrisma
 }
+
+export const prisma = createPrismaClient()

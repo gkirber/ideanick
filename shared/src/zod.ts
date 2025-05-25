@@ -17,7 +17,7 @@ export const zNickRequired = zStringRequired.regex(
 )
 export const zStringMin = (min: number) => zStringRequired.min(min, `Text should be at least ${min} characters long`)
 export const zPasswordsMustBeTheSame =
-  (passwordFieldName: string, passwordAgainFieldName: string) => (val: any, ctx: z.RefinementCtx) => {
+  (passwordFieldName: string, passwordAgainFieldName: string) => (val: Record<string, unknown>, ctx: z.RefinementCtx) => {
     if (val[passwordFieldName] !== val[passwordAgainFieldName]) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
