@@ -10,8 +10,8 @@ export const getEditProfileRoute = pgr(() => '/edit-profile')
 
 export const getAllIdeasRoute = pgr(() => '/')
 
-export const getViewIdeaRoute = pgr({ ideaNick: true }, ({ ideaNick }) => `/ideas/${ideaNick}`)
+export const getViewIdeaRoute = pgr({ ideaNick: ':ideaNick' }, ({ ideaNick }) => `/ideas/${ideaNick}`)
 
-export const getEditIdeaRoute = pgr({ ideaNick: true }, ({ ideaNick }) => `/ideas/${ideaNick}/edit`)
+export const getEditIdeaRoute = pgr({ ideaNick: ':ideaNick' }, ({ ideaNick }) => `/ideas/${ideaNick}/edit`)
 
 export const getNewIdeaRoute = pgr(() => '/ideas/new')

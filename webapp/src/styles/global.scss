@@ -1,7 +1,7 @@
 @use 'reset-css/sass/reset';
-@use 'vars' as vars; // Змінено тут
+@use 'vars' as vars;
 @use 'include-media/dist/include-media' as media;
-@use 'react-image-gallery/styles/scss/image-gallery';
+// @use 'react-image-gallery/styles/scss/image-gallery';
 
 html,
 body,

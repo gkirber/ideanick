@@ -1,3 +1,4 @@
+@use 'vars' as *;
 @import '../UploadToCloudinary/index.module';
 
 .field {
@@ -23,7 +24,7 @@
         cursor: pointer;
 
         .deleteIcon {
-          color: $red;
+          color: #ff0000;
         }
       }
     }
