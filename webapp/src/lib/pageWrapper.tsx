@@ -10,63 +10,38 @@ import { NotFoundPage } from '../pages/other/NotFoundPage'
 import { useAppContext, type AppContext } from './ctx'
 
 class CheckExistsError extends Error {}
-const checkExistsFn = <T,>(value: T, message?: string): NonNullable<T> => {
-  if (!value) {
-    throw new CheckExistsError(message)
-  }
-  return value
-}
-
 class CheckAccessError extends Error {}
-const checkAccessFn = <T,>(value: T, message?: string): void => {
-  if (!value) {
-    throw new CheckAccessError(message)
-  }
-}
-
 class GetAuthorizedMeError extends Error {}
 
-type Props = Record<string, any>
-type QueryResult = UseTRPCQueryResult<any, any>
-type QuerySuccessResult<TQueryResult extends QueryResult> = UseTRPCQuerySuccessResult<
-  NonNullable<TQueryResult['data']>,
-  null
->
-type HelperProps<TQueryResult extends QueryResult | undefined> = {
+type HelperProps<TData> = {
   ctx: AppContext
-  queryResult: TQueryResult extends QueryResult ? QuerySuccessResult<TQueryResult> : undefined
+  queryResult?: UseTRPCQuerySuccessResult<TData, null>
 }
-type SetPropsProps<TQueryResult extends QueryResult | undefined> = HelperProps<TQueryResult> & {
-  checkExists: typeof checkExistsFn
-  checkAccess: typeof checkAccessFn
-  getAuthorizedMe: (message?: string) => NonNullable<AppContext['me']>
-}
-type PageWrapperProps<TProps extends Props, TQueryResult extends QueryResult | undefined> = {
-  redirectAuthorized?: boolean
 
+type SetPropsProps<TData, TProps extends Record<string, unknown>> = HelperProps<TData> & {
+  getAuthorizedMe: (message?: string) => NonNullable<AppContext['me']>
+} & TProps
+
+interface PageWrapperProps<TData, TProps extends Record<string, unknown>> {
+  redirectAuthorized?: boolean
   authorizedOnly?: boolean
   authorizedOnlyTitle?: string
   authorizedOnlyMessage?: string
-
-  checkAccess?: (helperProps: HelperProps<TQueryResult>) => boolean
+  checkAccess?: (helperProps: HelperProps<TData>) => boolean
   checkAccessTitle?: string
   checkAccessMessage?: string
-
-  checkExists?: (helperProps: HelperProps<TQueryResult>) => boolean
+  checkExists?: (helperProps: HelperProps<TData>) => boolean
   checkExistsTitle?: string
   checkExistsMessage?: string
-
   showLoaderOnFetching?: boolean
-
-  title: string | ((titleProps: HelperProps<TQueryResult> & TProps) => string)
+  title: string | ((props: HelperProps<TData> & TProps) => string)
   isTitleExact?: boolean
-
-  useQuery?: () => TQueryResult
-  setProps?: (setPropsProps: SetPropsProps<TQueryResult>) => TProps
+  useQuery?: () => UseTRPCQueryResult<TData, unknown>
+  setProps?: (props: SetPropsProps<TData, TProps>) => TProps
   Page: React.FC<TProps>
 }
 
-const PageWrapper = <TProps extends Props = {}, TQueryResult extends QueryResult | undefined = undefined>({
+const PageWrapper = <TData, TProps extends Record<string, unknown>>({
   authorizedOnly,
   authorizedOnlyTitle = 'Please, Authorize',
   authorizedOnlyMessage = 'This page is available only for authorized users',
@@ -83,7 +58,7 @@ const PageWrapper = <TProps extends Props = {}, TQueryResult extends QueryResult
   isTitleExact = false,
   Page,
   showLoaderOnFetching = true,
-}: PageWrapperProps<TProps, TQueryResult>) => {
+}: PageWrapperProps<TData, TProps>) => {
   const lastVisistedNotAuthRoute = useStore(lastVisistedNotAuthRouteStore)
   const navigate = useNavigate()
   const ctx = useAppContext()
@@ -92,9 +67,7 @@ const PageWrapper = <TProps extends Props = {}, TQueryResult extends QueryResult
   const redirectNeeded = redirectAuthorized && ctx.me
 
   useEffect(() => {
-    if (redirectNeeded) {
-      navigate(lastVisistedNotAuthRoute, { replace: true })
-    }
+    if (redirectNeeded) navigate(lastVisistedNotAuthRoute, { replace: true })
   }, [redirectNeeded, navigate, lastVisistedNotAuthRoute])
 
   if (queryResult?.isLoading || (showLoaderOnFetching && queryResult?.isFetching) || redirectNeeded) {
@@ -102,45 +75,43 @@ const PageWrapper = <TProps extends Props = {}, TQueryResult extends QueryResult
   }
 
   if (queryResult?.isError) {
-    return <ErrorPageComponent message={queryResult.error.message} />
+    const errorMessage = queryResult.error instanceof Error ? queryResult.error.message : 'An unknown error occurred'
+    return <ErrorPageComponent message={errorMessage} />
   }
 
   if (authorizedOnly && !ctx.me) {
     return <ErrorPageComponent title={authorizedOnlyTitle} message={authorizedOnlyMessage} />
   }
 
-  const helperProps = { ctx, queryResult: queryResult as never }
-
-  if (checkAccess) {
-    const accessDenied = !checkAccess(helperProps)
-    if (accessDenied) {
-      return <ErrorPageComponent title={checkAccessTitle} message={checkAccessMessage} />
-    }
+  const helperProps: HelperProps<TData> = {
+    ctx,
+    queryResult: queryResult?.data ? (queryResult as UseTRPCQuerySuccessResult<TData, null>) : undefined,
   }
 
-  if (checkExists) {
-    const notExists = !checkExists(helperProps)
-    if (notExists) {
-      return <NotFoundPage title={checkExistsTitle} message={checkExistsMessage} />
-    }
+  if (checkAccess && !checkAccess(helperProps)) {
+    return <ErrorPageComponent title={checkAccessTitle} message={checkAccessMessage} />
+  }
+
+  if (checkExists && !checkExists(helperProps)) {
+    return <NotFoundPage title={checkExistsTitle} message={checkExistsMessage} />
   }
 
   const getAuthorizedMe = (message?: string) => {
-    if (!ctx.me) {
-      throw new GetAuthorizedMeError(message)
-    }
+    if (!ctx.me) throw new GetAuthorizedMeError(message)
     return ctx.me
   }
 
   try {
-    const props = setProps?.({
-      ...helperProps,
-      checkExists: checkExistsFn,
-      checkAccess: checkAccessFn,
-      getAuthorizedMe,
-    }) as TProps
+    const props =
+      setProps?.({
+        ...helperProps,
+        getAuthorizedMe,
+      } as unknown as SetPropsProps<TData, TProps>) ?? ({} as TProps)
+
     const calculatedTitle = typeof title === 'function' ? title({ ...helperProps, ...props }) : title
+
     const exactTitle = isTitleExact ? calculatedTitle : `${calculatedTitle} — IdeaNick`
+
     return (
       <>
         <Helmet>
@@ -163,10 +134,10 @@ const PageWrapper = <TProps extends Props = {}, TQueryResult extends QueryResult
   }
 }
 
-export const withPageWrapper = <TProps extends Props = {}, TQueryResult extends QueryResult | undefined = undefined>(
-  pageWrapperProps: Omit<PageWrapperProps<TProps, TQueryResult>, 'Page'>
+export const withPageWrapper = <TData, TProps extends Record<string, unknown>>(
+  pageWrapperProps: Omit<PageWrapperProps<TData, TProps>, 'Page'>
 ) => {
-  return (Page: PageWrapperProps<TProps, TQueryResult>['Page']) => {
+  return (Page: React.FC<TProps>) => {
     return () => <PageWrapper {...pageWrapperProps} Page={Page} />
   }
 }

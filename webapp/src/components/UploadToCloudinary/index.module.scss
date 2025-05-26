@@ -1,5 +1,5 @@
-@import 'vars';
-@import '../Input/index.module';
+@use '../../styles/vars' as v;
+@use '../Input/index.module';
 
 .field {
   input {
@@ -12,9 +12,9 @@
     width: 100px;
     height: 100px;
     padding: 10px;
-    border: 1px solid $gray;
-    background-color: $grayLight;
-    border-radius: $borderRadiusSmall;
+    border: 1px solid v.$gray;
+    background-color: v.$grayLight;
+    border-radius: v.$borderRadiusSmall;
     margin-bottom: 5px;
     display: flex;
     align-items: center;

@@ -1,7 +1,8 @@
 import type { TrpcRouterOutput } from '@ideanick/backend/src/router'
 import { canBlockIdeas, canEditIdea } from '@ideanick/backend/src/utils/can'
-import { getAvatarUrl } from '@ideanick/shared/src/cloudinary'
+import { getAvatarUrl, getCloudinaryUploadUrl } from '@ideanick/shared/src/cloudinary'
 import { format } from 'date-fns'
+import ImageGallery from 'react-image-gallery'
 import { Alert } from '../../../components/Alert'
 import { Button, LinkButton } from '../../../components/Button'
 import { FormItems } from '../../../components/FormItems'
@@ -13,7 +14,11 @@ import { getEditIdeaRoute, getViewIdeaRoute } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
 import css from './index.module.scss'
 
-const LikeButton = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['idea']> }) => {
+type IdeaType = NonNullable<TrpcRouterOutput['getIdea']['idea']> & {
+  images: string[]
+}
+
+const LikeButton = ({ idea }: { idea: IdeaType }) => {
   const trpcUtils = trpc.useContext()
   const setIdeaLike = trpc.setIdeaLike.useMutation({
     onMutate: ({ isLikedByMe }) => {
@@ -46,7 +51,7 @@ const LikeButton = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['i
   )
 }
 
-const BlockIdea = ({ idea }: { idea: NonNullable<TrpcRouterOutput['getIdea']['idea']> }) => {
+const BlockIdea = ({ idea }: { idea: IdeaType }) => {
   const blockIdea = trpc.blockIdea.useMutation()
   const trpcUtils = trpc.useContext()
   const { formik, alertProps, buttonProps } = useForm({
@@ -75,7 +80,7 @@ export const ViewIdeaPage = withPageWrapper({
     })
   },
   setProps: ({ queryResult, checkExists, ctx }) => ({
-    idea: checkExists(queryResult.data.idea, 'Idea not found'),
+    idea: checkExists(queryResult.data.idea, 'Idea not found') as IdeaType,
     me: ctx.me,
   }),
   showLoaderOnFetching: false,
@@ -92,6 +97,18 @@ export const ViewIdeaPage = withPageWrapper({
         {idea.author.name ? ` (${idea.author.name})` : ''}
       </div>
     </div>
+    {!!idea.images.length && (
+      <div className={css.gallery}>
+        <ImageGallery
+          showPlayButton={false}
+          showFullscreenButton={false}
+          items={idea.images.map((image) => ({
+            original: getCloudinaryUploadUrl(image, 'image', 'large'),
+            thumbnail: getCloudinaryUploadUrl(image, 'image', 'preview'),
+          }))}
+        />
+      </div>
+    )}
     <div className={css.text} dangerouslySetInnerHTML={{ __html: idea.text }} />
     <div className={css.likes}>
       Likes: {idea.likesCount}

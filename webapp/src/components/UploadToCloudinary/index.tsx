@@ -11,8 +11,6 @@ import { trpc } from '../../lib/trpc'
 import { Button, Buttons } from '../Button'
 import css from './index.module.scss'
 
-type CloudinaryFormValues = Record<string, string | null | undefined>
-
 export const useUploadToCloudinary = (type: CloudinaryUploadTypeName) => {
   const prepareCloudinaryUpload = trpc.prepareCloudinaryUpload.useMutation()
 
@@ -61,23 +59,28 @@ export const useUploadToCloudinary = (type: CloudinaryUploadTypeName) => {
   return { uploadToCloudinary }
 }
 
-export const UploadToCloudinary = <
-  TFormValues extends CloudinaryFormValues,
+interface UploadToCloudinaryProps<
   TTypeName extends CloudinaryUploadTypeName,
+  TFormValues extends Record<string, string | null>,
+> {
+  label: string
+  name: keyof TFormValues
+  formik: FormikProps<TFormValues>
+  type: TTypeName
+  preset: CloudinaryUploadPresetName<TTypeName>
+}
+
+export const UploadToCloudinary = <
+  TTypeName extends CloudinaryUploadTypeName,
+  TFormValues extends Record<string, string | null>,
 >({
   label,
   name,
   formik,
   type,
   preset,
-}: {
-  label: string
-  name: string
-  formik: FormikProps<TFormValues>
-  type: TTypeName
-  preset: CloudinaryUploadPresetName<TTypeName>
-}) => {
-  const value = formik.values[name]
+}: UploadToCloudinaryProps<TTypeName, TFormValues>) => {
+  const value = formik.values[name] as string | null
   const error = formik.errors[name] as string | undefined
   const touched = formik.touched[name] as boolean
   const invalid = touched && !!error
@@ -103,13 +106,14 @@ export const UploadToCloudinary = <
               if (files?.length) {
                 const file = files[0]
                 const { publicId } = await uploadToCloudinary(file)
-                void formik.setFieldValue(name, publicId)
+                void formik.setFieldValue(name as string, publicId)
               }
-            } catch (err: Error | unknown) {
+            } catch (err: unknown) {
               console.error(err)
-              formik.setFieldError(name, err instanceof Error ? err.message : 'Unknown error')
+              const errorMessage = err instanceof Error ? err.message : 'Помилка завантаження'
+              formik.setFieldError(name as string, errorMessage)
             } finally {
-              void formik.setFieldTouched(name, true, false)
+              void formik.setFieldTouched(name as string, true, false)
               setLoading(false)
               if (inputEl.current) {
                 inputEl.current.value = ''
@@ -118,7 +122,7 @@ export const UploadToCloudinary = <
           })()
         }}
       />
-      <label className={css.label} htmlFor={name}>
+      <label className={css.label} htmlFor={name as string}>
         {label}
       </label>
       {!!value && !loading && (
@@ -135,20 +139,20 @@ export const UploadToCloudinary = <
             disabled={loading || disabled}
             color="green"
           >
-            {value ? 'Upload another' : 'Upload'}
+            {value ? 'Змінити' : 'Завантажити'}
           </Button>
           {!!value && !loading && (
             <Button
               type="button"
               color="red"
               onClick={() => {
-                void formik.setFieldValue(name, null)
-                formik.setFieldError(name, undefined)
-                void formik.setFieldTouched(name)
+                void formik.setFieldValue(name as string, null)
+                formik.setFieldError(name as string, undefined)
+                void formik.setFieldTouched(name as string)
               }}
               disabled={disabled}
             >
-              Remove
+              Видалити
             </Button>
           )}
         </Buttons>

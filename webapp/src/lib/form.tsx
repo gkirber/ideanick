@@ -20,7 +20,7 @@ export const useForm = <TZodSchema extends z.ZodTypeAny>({
   showValidationAlert?: boolean
   initialValues?: z.infer<TZodSchema>
   validationSchema?: TZodSchema
-  onSubmit?: (values: z.infer<TZodSchema>, actions: FormikHelpers<z.infer<TZodSchema>>) => Promise<any> | any
+  onSubmit?: (values: z.infer<TZodSchema>, actions: FormikHelpers<z.infer<TZodSchema>>) => Promise<void> | void
 }) => {
   const [successMessageVisible, setSuccessMessageVisible] = useState(false)
   const [submittingError, setSubmittingError] = useState<Error | null>(null)
@@ -29,24 +29,24 @@ export const useForm = <TZodSchema extends z.ZodTypeAny>({
     initialValues,
     ...(validationSchema && { validate: withZodSchema(validationSchema) }),
     onSubmit: async (values, formikHelpers) => {
-      if (!onSubmit) {
-        return
-      }
+      if (!onSubmit) return
+
       try {
         setSubmittingError(null)
         await onSubmit(values, formikHelpers)
-        if (resetOnSuccess) {
-          formik.resetForm()
-        }
+        if (resetOnSuccess) formik.resetForm()
         setSuccessMessageVisible(true)
-        setTimeout(() => {
-          setSuccessMessageVisible(false)
-        }, 3000)
-      } catch (error: any) {
-        if (!(error instanceof TRPCClientError)) {
-          sentryCaptureException(error)
+        setTimeout(() => setSuccessMessageVisible(false), 3000)
+      } catch (error: unknown) {
+        const caughtError =
+          error instanceof Error
+            ? error
+            : new Error(typeof error === 'string' ? error : 'Unknown form submission error')
+
+        if (!(caughtError instanceof TRPCClientError)) {
+          sentryCaptureException(caughtError)
         }
-        setSubmittingError(error)
+        setSubmittingError(caughtError)
       }
     },
   })
@@ -80,15 +80,12 @@ export const useForm = <TZodSchema extends z.ZodTypeAny>({
     }
   }, [submittingError, formik.isValid, formik.submitCount, successMessageVisible, successMessage, showValidationAlert])
 
-  const buttonProps = useMemo<Omit<ButtonProps, 'children'>>(() => {
-    return {
+  const buttonProps = useMemo<Omit<ButtonProps, 'children'>>(
+    () => ({
       loading: formik.isSubmitting,
-    }
-  }, [formik.isSubmitting])
+    }),
+    [formik.isSubmitting]
+  )
 
-  return {
-    formik,
-    alertProps,
-    buttonProps,
-  }
+  return { formik, alertProps, buttonProps }
 }
