@@ -15,6 +15,7 @@ import { getIdeasTrpcRoute } from './ideas/getIdeas'
 import { setIdeaLikeTrpcRoute } from './ideas/setIdeaLike'
 import { updateIdeaTrpcRoute } from './ideas/updateIdea'
 import { prepareCloudinaryUploadTrpcRoute } from './upload/prepareCloudinaryUpload'
+import { prepareS3UploadTrpcRoute } from './upload/prepareS3Upload'
 // @endindex
 
 export const trpcRouter = createTrpcRouter({
@@ -31,6 +32,7 @@ export const trpcRouter = createTrpcRouter({
   setIdeaLike: setIdeaLikeTrpcRoute,
   updateIdea: updateIdeaTrpcRoute,
   prepareCloudinaryUpload: prepareCloudinaryUploadTrpcRoute,
+  prepareS3Upload: prepareS3UploadTrpcRoute,
   // @endindex
 })
 

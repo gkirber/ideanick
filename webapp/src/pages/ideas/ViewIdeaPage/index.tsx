@@ -1,6 +1,7 @@
 import type { TrpcRouterOutput } from '@ideanick/backend/src/router'
 import { canBlockIdeas, canEditIdea } from '@ideanick/backend/src/utils/can'
 import { getAvatarUrl, getCloudinaryUploadUrl } from '@ideanick/shared/src/cloudinary'
+import { getS3UploadName, getS3UploadUrl } from '@ideanick/shared/src/s3'
 import { format } from 'date-fns'
 import ImageGallery from 'react-image-gallery'
 import { Alert } from '../../../components/Alert'
@@ -9,7 +10,8 @@ import { FormItems } from '../../../components/FormItems'
 import { Icon } from '../../../components/Icon'
 import { Segment } from '../../../components/Segment'
 import { useForm } from '../../../lib/form'
-import { withPageWrapper } from '../../../lib/pageWrapper'
+import { withPageWrapper, type SetPropsProps } from '../../../lib/pageWrapper'
+import { type AppContext } from '../../../lib/ctx'
 import { getEditIdeaRoute, getViewIdeaRoute } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
 import css from './index.module.scss'
@@ -72,6 +74,8 @@ const BlockIdea = ({ idea }: { idea: IdeaType }) => {
   )
 }
 
+type MeType = NonNullable<AppContext['me']>
+
 export const ViewIdeaPage = withPageWrapper({
   useQuery: () => {
     const { ideaNick } = getViewIdeaRoute.useParams()
@@ -79,13 +83,21 @@ export const ViewIdeaPage = withPageWrapper({
       ideaNick,
     })
   },
-  setProps: ({ queryResult, checkExists, ctx }) => ({
-    idea: checkExists(queryResult.data.idea, 'Idea not found') as IdeaType,
-    me: ctx.me,
-  }),
+  setProps: ({ queryResult, getAuthorizedMe }: SetPropsProps<
+    { idea: IdeaType | null },
+    { idea: IdeaType; me: MeType }
+  >) => {
+    if (!queryResult?.data?.idea) {
+      throw new Error('Idea not found')
+    }
+    return {
+      idea: queryResult.data.idea as IdeaType,
+      me: getAuthorizedMe(),
+    }
+  },
   showLoaderOnFetching: false,
-  title: ({ idea }) => idea.name,
-})(({ idea, me }) => (
+  title: ({ idea }: { idea: IdeaType }) => idea.name,
+})(({ idea, me }: { idea: IdeaType; me: MeType }) => (
   <Segment title={idea.name} description={idea.description}>
     <div className={css.createdAt}>Created At: {format(idea.createdAt, 'yyyy-MM-dd')}</div>
     <div className={css.author}>
@@ -107,6 +119,14 @@ export const ViewIdeaPage = withPageWrapper({
             thumbnail: getCloudinaryUploadUrl(image, 'image', 'preview'),
           }))}
         />
+      </div>
+    )}
+    {idea.certificate && (
+      <div className={css.certificate}>
+        Certificate:{' '}
+        <a className={css.certificateLink} target="_blank" href={getS3UploadUrl(idea.certificate)} rel="noreferrer">
+          {getS3UploadName(idea.certificate)}
+        </a>
       </div>
     )}
     <div className={css.text} dangerouslySetInnerHTML={{ __html: idea.text }} />

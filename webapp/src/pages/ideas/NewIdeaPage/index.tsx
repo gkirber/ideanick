@@ -5,23 +5,36 @@ import { FormItems } from '../../../components/FormItems'
 import { Input } from '../../../components/Input'
 import { Segment } from '../../../components/Segment'
 import { Textarea } from '../../../components/Textarea'
+import { UploadToS3 } from '../../../components/UploadToS3'
 import { UploadsToCloudinary } from '../../../components/UploadsToCloudinary'
 import { useForm } from '../../../lib/form'
 import { withPageWrapper } from '../../../lib/pageWrapper'
 import { trpc } from '../../../lib/trpc'
+import { type FormikProps } from 'formik'
+
+type IdeaFormValues = {
+  name: string
+  nick: string
+  description: string
+  text: string
+  images: string[]
+  certificate: string | null
+}
 
 export const NewIdeaPage = withPageWrapper({
   authorizedOnly: true,
   title: 'New Idea',
 })(() => {
   const createIdea = trpc.createIdea.useMutation()
-  const { formik, buttonProps, alertProps } = useForm({
+
+  const { formik, buttonProps, alertProps } = useForm<typeof zCreateIdeaTrpcInput>({
     initialValues: {
       name: '',
       nick: '',
       description: '',
       text: '',
       images: [],
+      certificate: null,
     },
     validationSchema: zCreateIdeaTrpcInput,
     onSubmit: async (values) => {
@@ -32,6 +45,9 @@ export const NewIdeaPage = withPageWrapper({
     showValidationAlert: true,
   })
 
+  // Кастимо до правильного типу, який містить усі поля
+  const typedFormik = formik as FormikProps<IdeaFormValues>
+
   return (
     <Segment title="New Idea">
       <form
@@ -41,11 +57,17 @@ export const NewIdeaPage = withPageWrapper({
         }}
       >
         <FormItems>
-          <Input name="name" label="Name" formik={formik} maxWidth={500} placeholder="Enter idea name" />
+          <Input
+            name="name"
+            label="Name"
+            formik={typedFormik}
+            maxWidth={500}
+            placeholder="Enter idea name"
+          />
           <Input
             name="nick"
             label="Nick"
-            formik={formik}
+            formik={typedFormik}
             maxWidth={500}
             placeholder="Use only lowercase letters, numbers and dashes"
             helperText="Only lowercase letters, numbers and dashes are allowed"
@@ -53,18 +75,29 @@ export const NewIdeaPage = withPageWrapper({
           <Input
             name="description"
             label="Description"
-            formik={formik}
+            formik={typedFormik}
             maxWidth={500}
             placeholder="Brief description of your idea"
           />
           <Textarea
             name="text"
             label="Text"
-            formik={formik}
+            formik={typedFormik}
             placeholder="Detailed description of your idea (minimum 100 characters)"
             helperText="Text should be at least 100 characters long"
           />
-          <UploadsToCloudinary label="Images" name="images" type="image" preset="preview" formik={formik} />
+          <UploadsToCloudinary
+            label="Images"
+            name="images"
+            type="image"
+            preset="preview"
+            formik={typedFormik}
+          />
+          <UploadToS3
+            label="Certificate"
+            name="certificate"
+            formik={typedFormik}
+          />
           <Alert {...alertProps} />
           <Button {...buttonProps}>Create Idea</Button>
         </FormItems>

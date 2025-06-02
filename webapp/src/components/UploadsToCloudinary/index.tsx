@@ -13,7 +13,7 @@ import css from './index.module.scss'
 
 interface UploadsToCloudinaryProps<
   TTypeName extends CloudinaryUploadTypeName,
-  TFormValues extends { [key: string]: string[] | undefined },
+  TFormValues extends Record<string, string[] | undefined>,
 > {
   label: string
   name: keyof TFormValues
@@ -24,7 +24,7 @@ interface UploadsToCloudinaryProps<
 
 export const UploadsToCloudinary = <
   TTypeName extends CloudinaryUploadTypeName,
-  TFormValues extends { [key: string]: string[] | undefined },
+  TFormValues extends Record<string, string[] | undefined>,
 >({
   label,
   name,
@@ -32,7 +32,7 @@ export const UploadsToCloudinary = <
   type,
   preset,
 }: UploadsToCloudinaryProps<TTypeName, TFormValues>) => {
-  const value = (formik.values[name] as string[]) || []
+  const value = formik.values[name] || []
   const error = formik.errors[name] as string | undefined
   const touched = formik.touched[name] as boolean | undefined
   const invalid = !!touched && !!error
@@ -57,8 +57,7 @@ export const UploadsToCloudinary = <
       )
       formik.setFieldValue(name as string, newValue)
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : 'Upload failed'
-      formik.setFieldError(name as string, errorMessage)
+      formik.setFieldError(name as string, err instanceof Error ? err.message : 'Upload failed')
     } finally {
       formik.setFieldTouched(name as string, true, false)
       setLoading(false)
@@ -93,10 +92,19 @@ export const UploadsToCloudinary = <
         <div className={css.previews}>
           {value.map((publicId) => (
             <div key={publicId} className={css.previewPlace}>
-              <button type="button" className={css.delete} onClick={() => removeImage(publicId)} disabled={disabled}>
+              <button
+                type="button"
+                className={css.delete}
+                onClick={() => removeImage(publicId)}
+                disabled={disabled}
+              >
                 <Icon className={css.deleteIcon} name="delete" />
               </button>
-              <img className={css.preview} alt="" src={getCloudinaryUploadUrl(publicId, type, preset)} />
+              <img
+                className={css.preview}
+                alt="Preview"
+                src={getCloudinaryUploadUrl(publicId, type, preset)}
+              />
             </div>
           ))}
         </div>

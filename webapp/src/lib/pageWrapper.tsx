@@ -18,7 +18,7 @@ type HelperProps<TData> = {
   queryResult?: UseTRPCQuerySuccessResult<TData, null>
 }
 
-type SetPropsProps<TData, TProps extends Record<string, unknown>> = HelperProps<TData> & {
+export type SetPropsProps<TData, TProps extends Record<string, unknown>> = HelperProps<TData> & {
   getAuthorizedMe: (message?: string) => NonNullable<AppContext['me']>
 } & TProps
 
