@@ -1,6 +1,15 @@
 import { useParams as useReactRouterParams } from 'react-router-dom'
 
-const baseUrl = import.meta.env.VITE_WEBAPP_URL || process.env.WEBAPP_URL || ''
+const getBaseUrl = () => {
+  if (typeof window !== 'undefined') {
+    // Клієнтське середовище (Vite)
+    return import.meta.env.VITE_WEBAPP_URL || ''
+  }
+  // Серверне середовище (Node.js)
+  return process.env.WEBAPP_URL || ''
+}
+
+const baseUrl = getBaseUrl()
 
 interface PumpedGetRouteInputBase {
   abs?: boolean

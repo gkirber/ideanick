@@ -1,5 +1,5 @@
-@use 'vars' as *;
-@import '../UploadToCloudinary/index.module';
+@use '../../styles/vars' as *;
+@use '../UploadToCloudinary/index.module' as *;
 
 .field {
   input {

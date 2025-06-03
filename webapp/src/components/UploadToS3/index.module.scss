@@ -1,5 +1,5 @@
-@import '../../styles/mixins';
-@import '../Input/index.module';
+@use '../../styles/mixins' as *;
+@use '../Input/index.module' as *;
 
 .field {
   input {
