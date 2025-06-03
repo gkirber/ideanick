@@ -73,7 +73,7 @@ importers:
         specifier: ^7.0.3
         version: 7.0.3
       eslint:
-        specifier: 8.56.0
+        specifier: ^8.56.0
         version: 8.56.0
       eslint-config-prettier:
         specifier: ^10.1.5
@@ -348,7 +348,7 @@ importers:
         specifier: ^8.32.1
         version: 8.32.1(eslint@8.56.0)(typescript@5.8.3)
       eslint:
-        specifier: 8.56.0
+        specifier: ^8.56.0
         version: 8.56.0
       eslint-config-prettier:
         specifier: ^10.1.5
@@ -484,7 +484,7 @@ importers:
         specifier: ^4.3.4
         version: 4.4.1(vite@5.4.19(@types/node@22.15.21)(sass@1.89.0))
       eslint:
-        specifier: 8.56.0
+        specifier: ^8.56.0
         version: 8.56.0
       eslint-config-prettier:
         specifier: ^10.1.5
