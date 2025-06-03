@@ -13,10 +13,11 @@ import css from './index.module.scss'
 
 interface UploadsToCloudinaryProps<
   TTypeName extends CloudinaryUploadTypeName,
-  TFormValues extends Record<string, string[] | undefined>,
+  TFormValues,
+  TKey extends keyof TFormValues = keyof TFormValues,
 > {
   label: string
-  name: keyof TFormValues
+  name: TKey
   formik: FormikProps<TFormValues>
   type: TTypeName
   preset: CloudinaryUploadPresetName<TTypeName>
@@ -24,15 +25,16 @@ interface UploadsToCloudinaryProps<
 
 export const UploadsToCloudinary = <
   TTypeName extends CloudinaryUploadTypeName,
-  TFormValues extends Record<string, string[] | undefined>,
+  TFormValues,
+  TKey extends keyof TFormValues = keyof TFormValues,
 >({
   label,
   name,
   formik,
   type,
   preset,
-}: UploadsToCloudinaryProps<TTypeName, TFormValues>) => {
-  const value = formik.values[name] || []
+}: UploadsToCloudinaryProps<TTypeName, TFormValues, TKey>) => {
+  const value = (formik.values[name] || []) as string[]
   const error = formik.errors[name] as string | undefined
   const touched = formik.touched[name] as boolean | undefined
   const invalid = !!touched && !!error
@@ -92,19 +94,10 @@ export const UploadsToCloudinary = <
         <div className={css.previews}>
           {value.map((publicId) => (
             <div key={publicId} className={css.previewPlace}>
-              <button
-                type="button"
-                className={css.delete}
-                onClick={() => removeImage(publicId)}
-                disabled={disabled}
-              >
+              <button type="button" className={css.delete} onClick={() => removeImage(publicId)} disabled={disabled}>
                 <Icon className={css.deleteIcon} name="delete" />
               </button>
-              <img
-                className={css.preview}
-                alt="Preview"
-                src={getCloudinaryUploadUrl(publicId, type, preset)}
-              />
+              <img className={css.preview} alt="Preview" src={getCloudinaryUploadUrl(publicId, type, preset)} />
             </div>
           ))}
         </div>

@@ -2,8 +2,9 @@ extends:
   - ../.eslintrc.yml
 
 parserOptions:
-  project: tsconfig.json
+  project: ./tsconfig.json
   tsconfigRootDir: .
+  warnOnUnsupportedTypeScriptVersion: false
 
 settings:
   import/resolver:

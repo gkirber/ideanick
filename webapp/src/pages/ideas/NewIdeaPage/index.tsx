@@ -7,6 +7,7 @@ import { Segment } from '../../../components/Segment'
 import { Textarea } from '../../../components/Textarea'
 import { UploadToS3 } from '../../../components/UploadToS3'
 import { UploadsToCloudinary } from '../../../components/UploadsToCloudinary'
+import { UploadsToS3 } from '../../../components/UploadsToS3'
 import { useForm } from '../../../lib/form'
 import { withPageWrapper } from '../../../lib/pageWrapper'
 import { trpc } from '../../../lib/trpc'
@@ -19,6 +20,7 @@ type IdeaFormValues = {
   text: string
   images: string[]
   certificate: string | null
+  documents: string[]
 }
 
 export const NewIdeaPage = withPageWrapper({
@@ -57,13 +59,7 @@ export const NewIdeaPage = withPageWrapper({
         }}
       >
         <FormItems>
-          <Input
-            name="name"
-            label="Name"
-            formik={typedFormik}
-            maxWidth={500}
-            placeholder="Enter idea name"
-          />
+          <Input name="name" label="Name" formik={typedFormik} maxWidth={500} placeholder="Enter idea name" />
           <Input
             name="nick"
             label="Nick"
@@ -86,18 +82,9 @@ export const NewIdeaPage = withPageWrapper({
             placeholder="Detailed description of your idea (minimum 100 characters)"
             helperText="Text should be at least 100 characters long"
           />
-          <UploadsToCloudinary
-            label="Images"
-            name="images"
-            type="image"
-            preset="preview"
-            formik={typedFormik}
-          />
-          <UploadToS3
-            label="Certificate"
-            name="certificate"
-            formik={typedFormik}
-          />
+          <UploadsToCloudinary label="Images" name="images" type="image" preset="preview" formik={typedFormik} />
+          <UploadToS3 label="Certificate" name="certificate" formik={formik} />
+          <UploadsToS3 label="Documents" name="documents" formik={formik} />
           <Alert {...alertProps} />
           <Button {...buttonProps}>Create Idea</Button>
         </FormItems>

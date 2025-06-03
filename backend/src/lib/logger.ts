@@ -58,7 +58,7 @@ export const winstonLogger = winston.createLogger({
 
               return {
                 ...info,
-                message: info.message ?? '', // важливо для сумісності з Winston
+                message: info.message ?? '',
                 [MESSAGE]:
                   [topMessage, Object.keys(visibleMessageTags).length > 0 ? `${EOL}${stringifiedMeta}` : '']
                     .filter(Boolean)

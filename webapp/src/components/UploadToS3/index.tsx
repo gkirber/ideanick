@@ -1,4 +1,4 @@
-import { getS3UploadUrl, getS3UploadName } from '@ideanick/shared/src/s3'
+import { getS3UploadName, getS3UploadUrl } from '@ideanick/shared/src/s3'
 import cn from 'classnames'
 import { type FormikProps } from 'formik'
 import { useRef, useState } from 'react'
@@ -6,47 +6,48 @@ import { trpc } from '../../lib/trpc'
 import { Button, Buttons } from '../Button'
 import css from './index.module.scss'
 
+interface UploadFormValues {
+  [key: string]: string | null
+}
+
 export const useUploadToS3 = () => {
   const prepareS3Upload = trpc.prepareS3Upload.useMutation()
 
-  const uploadToS3 = async (file: File): Promise<{ s3Key: string }> => {
+  const uploadToS3 = async (file: File) => {
     const { signedUrl, s3Key } = await prepareS3Upload.mutateAsync({
       fileName: file.name,
       fileType: file.type,
       fileSize: file.size,
     })
 
-    await fetch(signedUrl, {
+    return await fetch(signedUrl, {
       method: 'PUT',
       body: file,
     })
-
-    return { s3Key }
+      .then(async (rawRes) => {
+        return await rawRes.text()
+      })
+      .then((res) => {
+        return { s3Key, res }
+      })
   }
 
   return { uploadToS3 }
 }
 
-function isErrorWithMessage(err: unknown): err is { message: string } {
-  return (
-    typeof err === 'object' &&
-    err !== null &&
-    'message' in err &&
-    typeof (err as Record<string, unknown>).message === 'string'
-  )
-}
-
-interface UploadToS3Props<T extends Record<string, string | null>> {
+export const UploadToS3 = ({
+  label,
+  name,
+  formik,
+}: {
   label: string
-  name: keyof T
-  formik: FormikProps<T>
-}
-
-export const UploadToS3 = <T extends Record<string, string | null>>({ label, name, formik }: UploadToS3Props<T>) => {
+  name: string
+  formik: FormikProps<UploadFormValues>
+}) => {
   const value = formik.values[name]
   const error = formik.errors[name] as string | undefined
-  const touched = formik.touched[name] as boolean | undefined
-  const invalid = !!touched && !!error
+  const touched = formik.touched[name] as boolean
+  const invalid = touched && !!error
   const disabled = formik.isSubmitting
 
   const inputEl = useRef<HTMLInputElement>(null)
@@ -55,7 +56,7 @@ export const UploadToS3 = <T extends Record<string, string | null>>({ label, nam
   const { uploadToS3 } = useUploadToS3()
 
   return (
-    <div className={cn(css.field, { [css.disabled]: disabled })}>
+    <div className={cn({ [css.field]: true, [css.disabled]: disabled })}>
       <input
         className={css.fileInput}
         type="file"
@@ -69,23 +70,25 @@ export const UploadToS3 = <T extends Record<string, string | null>>({ label, nam
               if (files?.length) {
                 const file = files[0]
                 const { s3Key } = await uploadToS3(file)
-                formik.setFieldValue(name as string, s3Key)
+                void formik.setFieldValue(name, s3Key)
               }
             } catch (err: unknown) {
               console.error(err)
-              formik.setFieldError(name as string, isErrorWithMessage(err) ? err.message : 'Unknown error')
+              const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred'
+              formik.setFieldError(name, errorMessage)
             } finally {
-              formik.setFieldTouched(name as string, true, false)
+              void formik.setFieldTouched(name, true, false)
               setLoading(false)
-              if (inputEl.current) inputEl.current.value = ''
+              if (inputEl.current) {
+                inputEl.current.value = ''
+              }
             }
           })()
         }}
       />
-      <label className={css.label} htmlFor={name as string}>
+      <label className={css.label} htmlFor={name}>
         {label}
       </label>
-
       {!!value && !loading && (
         <div className={css.uploads}>
           <div className={css.upload}>
@@ -95,7 +98,6 @@ export const UploadToS3 = <T extends Record<string, string | null>>({ label, nam
           </div>
         </div>
       )}
-
       <div className={css.buttons}>
         <Buttons>
           <Button
@@ -112,9 +114,9 @@ export const UploadToS3 = <T extends Record<string, string | null>>({ label, nam
               type="button"
               color="red"
               onClick={() => {
-                formik.setFieldValue(name as string, null)
-                formik.setFieldError(name as string, undefined)
-                formik.setFieldTouched(name as string)
+                void formik.setFieldValue(name, null)
+                formik.setFieldError(name, undefined)
+                void formik.setFieldTouched(name)
               }}
               disabled={disabled}
             >
@@ -123,7 +125,6 @@ export const UploadToS3 = <T extends Record<string, string | null>>({ label, nam
           )}
         </Buttons>
       </div>
-
       {invalid && <div className={css.error}>{error}</div>}
     </div>
   )

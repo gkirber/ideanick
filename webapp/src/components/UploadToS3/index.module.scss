@@ -1,4 +1,3 @@
-@use '_mixins';
 @import '../Input/index.module';
 
 .field {
@@ -11,7 +10,7 @@
 
     .upload {
       .uploadLink {
-        @include mixins.link;
+        @include link;
       }
     }
   }
