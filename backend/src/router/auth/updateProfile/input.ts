@@ -1,4 +1,4 @@
-import { zNickRequired } from '@ideanick/shared/src/zod'
+import { zNickRequired } from '@ideanick/shared/src/zodSchemas'
 import { z } from 'zod'
 
 export const zUpdateProfileTrpcInput = z.object({

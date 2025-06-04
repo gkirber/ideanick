@@ -1,4 +1,4 @@
-import { zEmailRequired, zNickRequired, zStringRequired } from '@ideanick/shared/src/zod'
+import { zEmailRequired, zNickRequired, zStringRequired } from '@ideanick/shared/src/zodSchemas'
 import { z } from 'zod'
 
 export const zSignUpTrpcInput = z.object({

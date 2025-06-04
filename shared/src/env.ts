@@ -1,5 +1,7 @@
 /* eslint-disable node/no-process-env */
-import { z, zEnvNonemptyTrimmed } from './zod'
+import { z } from 'zod'
+
+import { zEnvNonemptyTrimmed } from './zodSchemas'
 
 const sharedEnvRaw = {
   CLOUDINARY_CLOUD_NAME:

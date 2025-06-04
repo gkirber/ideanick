@@ -1,4 +1,4 @@
-import { zStringOptional } from '@ideanick/shared/src/zod'
+import { zStringOptional } from '@ideanick/shared/src/zodSchemas'
 import { z } from 'zod'
 
 export const zGetIdeasTrpcInput = z.object({

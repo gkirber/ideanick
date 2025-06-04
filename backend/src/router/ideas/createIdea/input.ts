@@ -1,5 +1,5 @@
-import { zNickRequired, zStringMin, zStringRequired } from '@ideanick/shared/src/zod';
-import { z } from 'zod';
+import { zNickRequired, zStringMin, zStringRequired } from '@ideanick/shared/src/zodSchemas'
+import { z } from 'zod'
 
 export const zCreateIdeaTrpcInput = z.object({
   name: zStringRequired,

@@ -1,4 +1,4 @@
-import { zStringRequired } from '@ideanick/shared/src/zod'
+import { zStringRequired } from '@ideanick/shared/src/zodSchemas'
 
 import { zCreateIdeaTrpcInput } from '../createIdea/input'
 

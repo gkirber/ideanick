@@ -2,7 +2,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import { zEnvHost, zEnvNonemptyTrimmed, zEnvNonemptyTrimmedRequiredOnNotLocal } from '@ideanick/shared/src/zod'
+import { zEnvHost, zEnvNonemptyTrimmed, zEnvNonemptyTrimmedRequiredOnNotLocal } from '@ideanick/shared/src/zodSchemas'
 import * as dotenv from 'dotenv'
 import { z } from 'zod'
 

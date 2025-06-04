@@ -1,11 +1,9 @@
 import { z } from 'zod'
 
-export { z }
-
 export const zEnvNonemptyTrimmed = z.string().trim().min(1)
 export const zEnvNonemptyTrimmedRequiredOnNotLocal = zEnvNonemptyTrimmed.optional().refine(
   // eslint-disable-next-line node/no-process-env
-  (val) => `${process.env.HOST_ENV}` === 'local' || !!val,
+  (val: string | undefined) => `${process.env.HOST_ENV}` === 'local' || !!val,
   'Required on not local host'
 )
 export const zEnvHost = z.enum(['local', 'production'])
