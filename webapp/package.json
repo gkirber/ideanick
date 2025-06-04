@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "test": "jest",
+    "test": "dotenv -e .env.test -e .env jest",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "types": "tsc --noEmit --project ./tsconfig.json && tsc --noEmit --project ./tsconfig.node.json",
@@ -60,6 +60,7 @@
     "eslint-import-resolver-typescript": "^4.4.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jest": "^28.11.0",
+    "eslint-plugin-node": "^11.1.0",
     "prettier": "^3.5.3",
     "stylelint": "^16.16.0",
     "stylelint-config-prettier-scss": "^1.0.0",

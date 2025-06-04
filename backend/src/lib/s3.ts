@@ -1,7 +1,7 @@
+import { env } from './env'
+
 import { S3Client } from '@aws-sdk/client-s3'
 import _ from 'lodash'
-
-import { env } from './env'
 
 export const getS3Client = _.memoize(() => {
   if (!env.S3_ACCESS_KEY_ID) {

@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "files": [],
+  "references": [{ "path": "./shared" }, { "path": "./webapp" }, { "path": "./backend" }]
+}

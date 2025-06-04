@@ -2,12 +2,13 @@ import '../lib/brevo.mock'
 import '../lib/emails/utils.mock'
 import '../lib/sentry.mock'
 
+import { env } from '../lib/env'
+
 import { omit } from '@ideanick/shared/src/omit'
 import { type Idea, type User } from '@prisma/client'
 import _ from 'lodash'
 
 import { createAppContext } from '../lib/ctx'
-import { env } from '../lib/env'
 import { getTrpcContext } from '../lib/trpc'
 import { trpcRouter } from '../router'
 import { deepMap, type Value } from '../utils/deepMap'

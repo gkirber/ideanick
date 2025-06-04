@@ -1,3 +1,5 @@
+import { env } from './env'
+
 import { EOL } from 'os'
 
 import { omit } from '@ideanick/shared/src/omit'
@@ -12,7 +14,6 @@ import * as yaml from 'yaml'
 
 import { deepMap } from '../utils/deepMap'
 
-import { env } from './env'
 import { ExpectedError } from './error'
 import { sentryCaptureException } from './sentry'
 

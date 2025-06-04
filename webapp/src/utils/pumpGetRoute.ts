@@ -1,16 +1,7 @@
+import { sharedEnv } from '@ideanick/shared/src/env'
 import { useParams as useReactRouterParams } from 'react-router-dom'
 
-const getBaseUrl = () => {
-  if (typeof window !== 'undefined') {
-    // Клієнтське середовище (Vite)
-    return import.meta.env.VITE_WEBAPP_URL || ''
-  }
-  // Серверне середовище (Node.js)
-  return process.env.WEBAPP_URL || ''
-}
-
-const baseUrl = getBaseUrl()
-
+const baseUrl = sharedEnv.WEBAPP_URL
 interface PumpedGetRouteInputBase {
   abs?: boolean
 }

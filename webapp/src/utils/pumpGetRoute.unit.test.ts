@@ -1,6 +1,7 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { sharedEnv } from '@ideanick/shared/src/env'
 import { pgr } from './pumpGetRoute'
 
+sharedEnv.WEBAPP_URL = 'https://example.com'
 describe('pgr', () => {
   beforeEach(() => {
     Object.defineProperty(import.meta.env, 'VITE_WEBAPP_URL', {

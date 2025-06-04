@@ -19,10 +19,6 @@ interface DoneCallback {
   (error: Error | null, user?: Express.User | false, options?: { message: string }): void
 }
 
-interface _AuthenticateCallback {
-  (err: Error | null, user?: Express.User | false, info?: { message: string }): void
-}
-
 export const applyPassportToExpressApp = (expressApp: Express, ctx: AppContext): void => {
   const jwtSecret = env.JWT_SECRET
   if (!jwtSecret) {

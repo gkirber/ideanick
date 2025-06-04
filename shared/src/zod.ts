@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+export { z }
+
 export const zEnvNonemptyTrimmed = z.string().trim().min(1)
 export const zEnvNonemptyTrimmedRequiredOnNotLocal = zEnvNonemptyTrimmed.optional().refine(
   // eslint-disable-next-line node/no-process-env
@@ -17,7 +19,8 @@ export const zNickRequired = zStringRequired.regex(
 )
 export const zStringMin = (min: number) => zStringRequired.min(min, `Text should be at least ${min} characters long`)
 export const zPasswordsMustBeTheSame =
-  (passwordFieldName: string, passwordAgainFieldName: string) => (val: Record<string, unknown>, ctx: z.RefinementCtx) => {
+  (passwordFieldName: string, passwordAgainFieldName: string) =>
+  (val: Record<string, unknown>, ctx: z.RefinementCtx) => {
     if (val[passwordFieldName] !== val[passwordAgainFieldName]) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
