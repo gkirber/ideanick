@@ -1,6 +1,7 @@
 import { zSignUpTrpcInput } from '@ideanick/backend/src/router/auth/signUp/input'
-import { zPasswordsMustBeTheSame, zStringRequired } from '@ideanick/shared/src/zod'
+import { zPasswordsMustBeTheSame, zStringRequired } from '@ideanick/shared/src/zodSchemas'
 import Cookies from 'js-cookie'
+
 import { Alert } from '../../../components/Alert'
 import { Button } from '../../../components/Button'
 import { FormItems } from '../../../components/FormItems'

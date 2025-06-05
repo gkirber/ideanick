@@ -1,7 +1,8 @@
 import type { TrpcRouterOutput } from '@ideanick/backend/src/router'
 import { zUpdatePasswordTrpcInput } from '@ideanick/backend/src/router/auth/updatePassword/input'
 import { zUpdateProfileTrpcInput } from '@ideanick/backend/src/router/auth/updateProfile/input'
-import { zPasswordsMustBeTheSame, zStringRequired } from '@ideanick/shared/src/zod'
+import { zPasswordsMustBeTheSame, zStringRequired } from '@ideanick/shared/src/zodSchemas'
+
 import { Alert } from '../../../components/Alert'
 import { Button } from '../../../components/Button'
 import { FormItems } from '../../../components/FormItems'
