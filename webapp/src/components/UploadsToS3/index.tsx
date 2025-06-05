@@ -2,9 +2,11 @@ import { getS3UploadName, getS3UploadUrl } from '@ideanick/shared/src/s3'
 import cn from 'classnames'
 import { type FormikProps } from 'formik'
 import { useRef, useState } from 'react'
+
 import { Button } from '../Button'
 import { Icon } from '../Icon'
 import { useUploadToS3 } from '../UploadToS3'
+
 import css from './index.module.scss'
 
 interface UploadsFormValues {
@@ -20,7 +22,7 @@ export const UploadsToS3 = ({
   name: string
   formik: FormikProps<UploadsFormValues>
 }) => {
-  const value = formik.values[name] as string[]
+  const value = (formik.values[name] as string[]) || []
   const error = formik.errors[name] as string | undefined
   const touched = formik.touched[name] as boolean
   const invalid = touched && !!error

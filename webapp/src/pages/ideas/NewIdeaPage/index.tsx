@@ -1,17 +1,18 @@
 import { zCreateIdeaTrpcInput } from '@ideanick/backend/src/router/ideas/createIdea/input'
+import { type FormikProps } from 'formik'
+
 import { Alert } from '../../../components/Alert'
 import { Button } from '../../../components/Button'
 import { FormItems } from '../../../components/FormItems'
 import { Input } from '../../../components/Input'
 import { Segment } from '../../../components/Segment'
 import { Textarea } from '../../../components/Textarea'
-import { UploadToS3 } from '../../../components/UploadToS3'
 import { UploadsToCloudinary } from '../../../components/UploadsToCloudinary'
 import { UploadsToS3 } from '../../../components/UploadsToS3'
+import { UploadToS3 } from '../../../components/UploadToS3'
 import { useForm } from '../../../lib/form'
 import { withPageWrapper } from '../../../lib/pageWrapper'
 import { trpc } from '../../../lib/trpc'
-import { type FormikProps } from 'formik'
 
 type IdeaFormValues = {
   name: string
@@ -37,6 +38,7 @@ export const NewIdeaPage = withPageWrapper({
       text: '',
       images: [],
       certificate: null,
+      documents: [],
     },
     validationSchema: zCreateIdeaTrpcInput,
     onSubmit: async (values) => {
