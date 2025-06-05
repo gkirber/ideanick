@@ -5,16 +5,19 @@ import { getS3UploadName, getS3UploadUrl } from '@ideanick/shared/src/s3'
 import { format } from 'date-fns'
 import { Fragment } from 'react'
 import ImageGallery from 'react-image-gallery'
+
 import { Alert } from '../../../components/Alert'
 import { Button, LinkButton } from '../../../components/Button'
 import { FormItems } from '../../../components/FormItems'
 import { Icon } from '../../../components/Icon'
 import { Segment } from '../../../components/Segment'
-import { useForm } from '../../../lib/form'
-import { withPageWrapper, type SetPropsProps } from '../../../lib/pageWrapper'
 import { type AppContext } from '../../../lib/ctx'
+import { useForm } from '../../../lib/form'
+import { mixpanelSetIdeaLike } from '../../../lib/mixpanel'
+import { withPageWrapper, type SetPropsProps } from '../../../lib/pageWrapper'
 import { getEditIdeaRoute, getViewIdeaRoute } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
+
 import css from './index.module.scss'
 
 type IdeaType = NonNullable<TrpcRouterOutput['getIdea']['idea']> & {
@@ -46,7 +49,13 @@ const LikeButton = ({ idea }: { idea: IdeaType }) => {
     <button
       className={css.likeButton}
       onClick={() => {
-        void setIdeaLike.mutateAsync({ ideaId: idea.id, isLikedByMe: !idea.isLikedByMe })
+        void setIdeaLike
+          .mutateAsync({ ideaId: idea.id, isLikedByMe: !idea.isLikedByMe })
+          .then(({ idea: { isLikedByMe } }) => {
+            if (isLikedByMe) {
+              mixpanelSetIdeaLike(idea)
+            }
+          })
       }}
     >
       <Icon size={32} className={css.likeIcon} name={idea.isLikedByMe ? 'likeFilled' : 'likeEmpty'} />

@@ -10,6 +10,7 @@ export const zEnv = z.object({
   VITE_WEBAPP_SENTRY_DSN: zEnvNonemptyTrimmedRequiredOnNotLocal,
   VITE_CLOUDINARY_CLOUD_NAME: zEnvNonemptyTrimmed,
   VITE_S3_URL: zEnvNonemptyTrimmed,
+  VITE_MIXPANEL_API_KEY: zEnvNonemptyTrimmedRequiredOnNotLocal,
 })
 
 export const env = zEnv.parse(process.env)
