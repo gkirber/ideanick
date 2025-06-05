@@ -3,10 +3,12 @@ import { type UseTRPCQueryResult, type UseTRPCQuerySuccessResult } from '@trpc/r
 import React, { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate } from 'react-router-dom'
+
 import { ErrorPageComponent } from '../components/ErrorPageComponent'
 import { Loader } from '../components/Loader'
 import { lastVisistedNotAuthRouteStore } from '../components/NotAuthRouteTracker'
 import { NotFoundPage } from '../pages/other/NotFoundPage'
+
 import { useAppContext, type AppContext } from './ctx'
 
 class CheckExistsError extends Error {}
@@ -20,6 +22,8 @@ type HelperProps<TData> = {
 
 export type SetPropsProps<TData, TProps extends Record<string, unknown>> = HelperProps<TData> & {
   getAuthorizedMe: (message?: string) => NonNullable<AppContext['me']>
+  checkExists: <T>(value: T | null | undefined, message?: string) => T
+  checkAccess: (hasAccess: boolean, message?: string) => void
 } & TProps
 
 interface PageWrapperProps<TData, TProps extends Record<string, unknown>> {
@@ -27,10 +31,10 @@ interface PageWrapperProps<TData, TProps extends Record<string, unknown>> {
   authorizedOnly?: boolean
   authorizedOnlyTitle?: string
   authorizedOnlyMessage?: string
-  checkAccess?: (helperProps: HelperProps<TData>) => boolean
+  checkAccessProp?: (helperProps: HelperProps<TData>) => boolean
   checkAccessTitle?: string
   checkAccessMessage?: string
-  checkExists?: (helperProps: HelperProps<TData>) => boolean
+  checkExistsProp?: (helperProps: HelperProps<TData>) => boolean
   checkExistsTitle?: string
   checkExistsMessage?: string
   showLoaderOnFetching?: boolean
@@ -46,10 +50,10 @@ const PageWrapper = <TData, TProps extends Record<string, unknown>>({
   authorizedOnlyTitle = 'Please, Authorize',
   authorizedOnlyMessage = 'This page is available only for authorized users',
   redirectAuthorized,
-  checkAccess,
+  checkAccessProp,
   checkAccessTitle = 'Access Denied',
   checkAccessMessage = 'You have no access to this page',
-  checkExists,
+  checkExistsProp,
   checkExistsTitle,
   checkExistsMessage,
   useQuery,
@@ -88,11 +92,11 @@ const PageWrapper = <TData, TProps extends Record<string, unknown>>({
     queryResult: queryResult?.data ? (queryResult as UseTRPCQuerySuccessResult<TData, null>) : undefined,
   }
 
-  if (checkAccess && !checkAccess(helperProps)) {
+  if (checkAccessProp && !checkAccessProp(helperProps)) {
     return <ErrorPageComponent title={checkAccessTitle} message={checkAccessMessage} />
   }
 
-  if (checkExists && !checkExists(helperProps)) {
+  if (checkExistsProp && !checkExistsProp(helperProps)) {
     return <NotFoundPage title={checkExistsTitle} message={checkExistsMessage} />
   }
 
@@ -101,11 +105,22 @@ const PageWrapper = <TData, TProps extends Record<string, unknown>>({
     return ctx.me
   }
 
+  const checkExists = <T,>(value: T | null | undefined, message?: string): T => {
+    if (value == null) throw new CheckExistsError(message)
+    return value
+  }
+
+  const checkAccess = (hasAccess: boolean, message?: string) => {
+    if (!hasAccess) throw new CheckAccessError(message)
+  }
+
   try {
     const props =
       setProps?.({
         ...helperProps,
         getAuthorizedMe,
+        checkExists,
+        checkAccess,
       } as unknown as SetPropsProps<TData, TProps>) ?? ({} as TProps)
 
     const calculatedTitle = typeof title === 'function' ? title({ ...helperProps, ...props }) : title

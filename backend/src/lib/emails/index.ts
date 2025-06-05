@@ -1,5 +1,6 @@
-import { getNewIdeaRoute, getViewIdeaRoute } from '@ideanick/webapp/src/lib/routes'
 import { type Idea, type User } from '@prisma/client'
+
+import { getNewIdeaRoute, getViewIdeaRoute } from '../../../../webapp/src/lib/routes'
 
 import { sendEmail } from './utils'
 

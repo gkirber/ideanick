@@ -1,5 +1,6 @@
 import { createRef } from 'react'
 import { Link, Outlet } from 'react-router-dom'
+
 import Logo from '../../assets/images/logo.svg?react'
 import { useMe } from '../../lib/ctx'
 import {
@@ -10,6 +11,7 @@ import {
   getSignOutRoute,
   getSignUpRoute,
 } from '../../lib/routes'
+
 import css from './index.module.scss'
 
 export const layoutContentElRef = createRef<HTMLDivElement>()

@@ -2,13 +2,11 @@ import { getS3UploadName, getS3UploadUrl } from '@ideanick/shared/src/s3'
 import cn from 'classnames'
 import { type FormikProps } from 'formik'
 import { useRef, useState } from 'react'
+
 import { trpc } from '../../lib/trpc'
 import { Button, Buttons } from '../Button'
-import css from './index.module.scss'
 
-interface UploadFormValues {
-  [key: string]: string | null
-}
+import css from './index.module.scss'
 
 export const useUploadToS3 = () => {
   const prepareS3Upload = trpc.prepareS3Upload.useMutation()
@@ -35,16 +33,16 @@ export const useUploadToS3 = () => {
   return { uploadToS3 }
 }
 
-export const UploadToS3 = ({
+export const UploadToS3 = <TFormValues extends Record<string, unknown>>({
   label,
   name,
   formik,
 }: {
   label: string
   name: string
-  formik: FormikProps<UploadFormValues>
+  formik: FormikProps<TFormValues>
 }) => {
-  const value = formik.values[name]
+  const value = formik.values[name] as string | null
   const error = formik.errors[name] as string | undefined
   const touched = formik.touched[name] as boolean
   const invalid = touched && !!error

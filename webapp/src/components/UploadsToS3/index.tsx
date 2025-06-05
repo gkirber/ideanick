@@ -9,18 +9,14 @@ import { useUploadToS3 } from '../UploadToS3'
 
 import css from './index.module.scss'
 
-interface UploadsFormValues {
-  [key: string]: string[]
-}
-
-export const UploadsToS3 = ({
+export const UploadsToS3 = <TFormValues extends Record<string, unknown>>({
   label,
   name,
   formik,
 }: {
   label: string
   name: string
-  formik: FormikProps<UploadsFormValues>
+  formik: FormikProps<TFormValues>
 }) => {
   const value = (formik.values[name] as string[]) || []
   const error = formik.errors[name] as string | undefined

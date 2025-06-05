@@ -1,5 +1,6 @@
 import cn from 'classnames'
 import { type FormikProps } from 'formik'
+
 import css from './index.module.scss'
 
 interface InputProps<TFormValues> {

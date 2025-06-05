@@ -6,9 +6,11 @@ import {
 import cn from 'classnames'
 import { type FormikProps } from 'formik'
 import { useRef, useState } from 'react'
+
 import { Button } from '../Button'
 import { Icon } from '../Icon'
 import { useUploadToCloudinary } from '../UploadToCloudinary'
+
 import css from './index.module.scss'
 
 interface UploadsToCloudinaryProps<

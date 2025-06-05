@@ -13,7 +13,9 @@ import { useForm } from '../../../lib/form'
 import { withPageWrapper } from '../../../lib/pageWrapper'
 import { trpc } from '../../../lib/trpc'
 
-const General = ({ me }: { me: NonNullable<TrpcRouterOutput['getMe']['me']> }) => {
+type MeType = NonNullable<TrpcRouterOutput['getMe']['me']>
+
+const General = ({ me }: { me: MeType }) => {
   const trpcUtils = trpc.useUtils()
   const updateProfile = trpc.updateProfile.useMutation()
   const { formik, alertProps, buttonProps } = useForm({

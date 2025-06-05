@@ -1,6 +1,7 @@
 import { atom } from 'nanostores'
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
+
 import { getAllIdeasRoute, getSignInRoute, getSignOutRoute, getSignUpRoute } from '../../lib/routes'
 
 export const lastVisistedNotAuthRouteStore = atom(getAllIdeasRoute())

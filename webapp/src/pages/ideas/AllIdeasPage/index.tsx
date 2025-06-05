@@ -1,6 +1,7 @@
 import { zGetIdeasTrpcInput } from '@ideanick/backend/src/router/ideas/getIdeas/input'
 import InfiniteScroll from 'react-infinite-scroller'
 import { Link } from 'react-router-dom'
+
 import { Alert } from '../../../components/Alert'
 import { Input } from '../../../components/Input'
 import { layoutContentElRef } from '../../../components/Layout'
@@ -11,6 +12,7 @@ import { useForm } from '../../../lib/form'
 import { withPageWrapper } from '../../../lib/pageWrapper'
 import { getViewIdeaRoute } from '../../../lib/routes'
 import { trpc } from '../../../lib/trpc'
+
 import css from './index.module.scss'
 
 export const AllIdeasPage = withPageWrapper({
