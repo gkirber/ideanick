@@ -3,13 +3,18 @@ import { z } from 'zod'
 
 import { zEnvNonemptyTrimmed } from './zodSchemas'
 
+declare global {
+  const webappEnvFromBackend: Record<string, string> | undefined
+}
+// eslint-disable-next-line no-undef
+const windowEnv = typeof webappEnvFromBackend !== 'undefined' ? webappEnvFromBackend : {}
+const getSharedEnvVariable = (key: string) =>
+  windowEnv[`VITE_${key}`] || windowEnv[key] || process.env[`VITE_${key}`] || process.env[key]
+
 const sharedEnvRaw = {
-  CLOUDINARY_CLOUD_NAME:
-    process.env.VITE_CLOUDINARY_CLOUD_NAME ||
-    process.env.CLOUDINARY_CLOUD_NAME ||
-    process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
-  S3_URL: process.env.VITE_S3_URL || process.env.S3_URL,
-  WEBAPP_URL: process.env.VITE_WEBAPP_URL || process.env.WEBAPP_URL,
+  CLOUDINARY_CLOUD_NAME: getSharedEnvVariable('CLOUDINARY_CLOUD_NAME'),
+  S3_URL: getSharedEnvVariable('S3_URL'),
+  WEBAPP_URL: getSharedEnvVariable('WEBAPP_URL'),
 }
 
 const zEnv = z.object({

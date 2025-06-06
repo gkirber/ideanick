@@ -121,7 +121,7 @@ const PageWrapper = <TData, TProps extends Record<string, unknown>>({
         getAuthorizedMe,
         checkExists,
         checkAccess,
-      } as unknown as SetPropsProps<TData, TProps>) ?? ({} as TProps)
+      } as SetPropsProps<TData, TProps>) ?? ({} as TProps)
 
     const calculatedTitle = typeof title === 'function' ? title({ ...helperProps, ...props }) : title
 
