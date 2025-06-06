@@ -12,6 +12,12 @@ dist
 dist-ssr
 *.local
 
+# Generated TypeScript files
+**/*.d.ts
+**/*.js.map
+src/lib/parsePublicEnv.js
+src/lib/parsePublicEnv.d.ts
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

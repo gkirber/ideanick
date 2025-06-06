@@ -1,0 +1,20 @@
+# Generated files
+**/*.d.ts
+**/*.js.map
+
+# Build outputs
+dist/
+build/
+.cache/
+coverage/
+
+# Generated configs
+vite.config.js
+vite.config.d.ts
+
+# Node modules
+node_modules/
+
+# Specific problematic files
+src/lib/parsePublicEnv.js
+src/lib/parsePublicEnv.d.ts 
