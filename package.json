@@ -2,7 +2,6 @@
   "name": "ideanick",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "b": "pnpm --filter @ideanick/backend",
     "w": "pnpm --filter @ideanick/webapp",
@@ -12,6 +11,9 @@
     "types": "concurrently 'pnpm b types' 'pnpm w types' 'pnpm sh types'",
     "lint": "concurrently 'pnpm b lint' 'pnpm w lint' 'pnpm sh lint'",
     "prettify": "pnpm -r --parallel prettify",
+    "dcc": "dotenv -e ./.env.docker -e ./backend/.env -e ./webapp/.env -- bash -c 'docker compose config'",
+    "dcb": "dotenv -e ./.env.docker -e ./backend/.env -e ./webapp/.env -- bash -c 'docker compose build'",
+    "dcu": "dotenv -e ./.env.docker -e ./backend/.env -e ./webapp/.env -- bash -c 'docker compose up'",
     "prepare": "husky && husky install"
   },
   "devDependencies": {
@@ -50,15 +52,17 @@
     "vitest": "^3.1.4"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.75.7",
-    "@trpc/client": "^10.45.2",
-    "@trpc/react-query": "^10.45.2",
-    "@trpc/server": "^10.45.2",
-    "include-media": "^2.0.0",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-router-dom": "^7.6.0",
-    "reset-css": "^5.0.2",
-    "usehooks-ts": "2.9.1"
-  }
+    "dotenv-cli": "^7.3.0",
+    "cross-env": "^7.0.3"
+  },
+  "@tanstack/react-query": "^5.75.7",
+  "@trpc/client": "^10.45.2",
+  "@trpc/react-query": "^10.45.2",
+  "@trpc/server": "^10.45.2",
+  "include-media": "^2.0.0",
+  "react": "^19.1.0",
+  "react-dom": "^19.1.0",
+  "react-router-dom": "^7.6.0",
+  "reset-css": "^5.0.2",
+  "usehooks-ts": "2.9.1"
 }

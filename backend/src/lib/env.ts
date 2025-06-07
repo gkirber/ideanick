@@ -1,14 +1,14 @@
 /* eslint-disable node/no-process-env */
 import fs from 'fs'
 import path from 'path'
-import { fileURLToPath } from 'url'
 
 import { zEnvHost, zEnvNonemptyTrimmed, zEnvNonemptyTrimmedRequiredOnNotLocal } from '@ideanick/shared/src/zodSchemas'
 import * as dotenv from 'dotenv'
 import { z } from 'zod'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+// __dirname is available in CommonJS
+// const __filename = fileURLToPath(import.meta.url)
+// const __dirname = path.dirname(__filename)
 
 const findEnvFilePath = (dir: string, pathPart: string): string | null => {
   const maybeEnvFilePath = path.join(dir, pathPart)

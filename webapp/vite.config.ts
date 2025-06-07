@@ -9,10 +9,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const publicEnv = parsePublicEnv(env)
 
-  if (env.HOST_ENV !== 'local') {
-    if (!env.SENTRY_AUTH_TOKEN) {
-      throw new Error('SENTRY_AUTH_TOKEN is not defined')
-    }
+  if (env.HOST_ENV !== 'local' && env.SENTRY_AUTH_TOKEN) {
     if (!env.SOURCE_VERSION) {
       throw new Error('SOURCE_VERSION is not defined')
     }

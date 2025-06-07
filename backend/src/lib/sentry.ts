@@ -1,7 +1,6 @@
 import { env } from './env'
 
 import path from 'path'
-import { fileURLToPath } from 'url'
 
 import { RewriteFrames } from '@sentry/integrations'
 import * as Sentry from '@sentry/node'
@@ -9,7 +8,7 @@ import * as Sentry from '@sentry/node'
 import { type LoggerMetaData } from './logger'
 
 const isSentryEnabled = env.BACKEND_SENTRY_DSN
-const __filename = fileURLToPath(import.meta.url)
+// const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 export const initSentry = () => {

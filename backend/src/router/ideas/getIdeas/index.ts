@@ -13,7 +13,9 @@ export const getIdeasTrpcRoute = trpcLoggedProcedure.input(zGetIdeasTrpcInput).q
       nick: true,
       name: true,
       description: true,
+      text: true,
       serialNumber: true,
+      createdAt: true,
       _count: {
         select: {
           ideasLikes: true,
@@ -28,17 +30,20 @@ export const getIdeasTrpcRoute = trpcLoggedProcedure.input(zGetIdeasTrpcInput).q
             OR: [
               {
                 name: {
-                  search: normalizedSearch,
+                  contains: normalizedSearch,
+                  mode: 'insensitive',
                 },
               },
               {
                 description: {
-                  search: normalizedSearch,
+                  contains: normalizedSearch,
+                  mode: 'insensitive',
                 },
               },
               {
                 text: {
-                  search: normalizedSearch,
+                  contains: normalizedSearch,
+                  mode: 'insensitive',
                 },
               },
             ],

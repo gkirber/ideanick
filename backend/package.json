@@ -2,7 +2,6 @@
   "name": "@ideanick/backend",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "dev": "cross-env NODE_ENV=development tsx watch ./src/index.ts",
     "test": "jest --runInBand",
@@ -14,10 +13,11 @@
     "sentry-release": "dotenv -- bash -c 'sentry-cli releases new ${SOURCE_VERSION} --finalize --org gkdevclb --project backend --auth-token ${SENTRY_AUTH_TOKEN}'",
     "sentry-sourcemaps": "dotenv -- bash -c 'sentry-cli releases files ${SOURCE_VERSION} upload-sourcemaps ./dist --org gkdevclb --project backend'",
     "sentry": "pnpm sentry-release && pnpm sentry-sourcemaps",
-    "start": "cross-env NODE_ENV=production pnpm exec tsx ./src/index.ts",
-    "pmd": "prisma migrate dev",
-    "pmt": "dotenv -e ./.env.test prisma migrate deploy",
-    "pgc": "prisma generate",
+    "start": "cross-env NODE_ENV=production node ./dist/backend/src/index.js",
+    "pmd": "pnpm exec prisma migrate dev",
+    "pmt": "dotenv -e ./.env.test -- pnpm exec prisma migrate deploy",
+    "pmp": "dotenv -e ./.env.production -- pnpm exec prisma migrate deploy",
+    "pgc": "pnpm exec prisma generate",
     "types": "tsc --noEmit --project ./tsconfig.json",
     "lint": "eslint --ext .ts .",
     "prettify": "prettier --loglevel warn --cache --write '{src/**/*,*}.{ts,tsx,js,json,yml,scss}' '!**/{node_modules,dist}/**/*'",
@@ -52,12 +52,14 @@
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "picocolors": "^1.1.1",
+    "prisma": "^6.6.0",
     "randomstring": "^1.3.1",
     "react-router-dom": "^6.15.0",
     "serialize-error": "8.1.0",
     "superjson": "^2.2.2",
     "triple-beam": "^1.4.1",
     "trpc-playground": "^1.0.4",
+    "tsx": "^4.19.3",
     "winston": "^3.17.0",
     "yaml": "^2.8.0",
     "zod": "^3.24.2"
@@ -86,9 +88,7 @@
     "eslint-plugin-jest": "^28.11.0",
     "eslint-plugin-node": "^11.1.0",
     "prettier": "^3.5.3",
-    "prisma": "^6.6.0",
     "ts-node-dev": "^2.0.0",
-    "tsx": "^4.19.3",
     "vite": "^6.2.0"
   }
 }

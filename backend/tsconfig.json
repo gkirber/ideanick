@@ -25,9 +25,9 @@
     "inlineSources": true,
     "isolatedModules": true,
     "lib": ["ES2021", "DOM"],
-    "module": "ESNext",
+    "module": "CommonJS",
     "target": "ES2021",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "allowImportingTsExtensions": false,
     "noEmit": false
   },

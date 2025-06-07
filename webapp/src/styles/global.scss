@@ -1,6 +1,6 @@
-@use 'reset-css/sass/reset';
+@use 'reset-css/sass/_reset';
 @use 'vars' as vars;
-@use 'include-media/dist/include-media' as media;
+@use 'include-media/dist/_include-media' as media;
 // @use 'react-image-gallery/styles/scss/image-gallery';
 
 html,
