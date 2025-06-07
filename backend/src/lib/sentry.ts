@@ -9,7 +9,7 @@ import { type LoggerMetaData } from './logger'
 
 const isSentryEnabled = env.BACKEND_SENTRY_DSN
 // const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const currentDir = path.dirname(__filename)
 
 export const initSentry = () => {
   if (isSentryEnabled) {
@@ -20,7 +20,7 @@ export const initSentry = () => {
       normalizeDepth: 10,
       integrations: [
         new RewriteFrames({
-          root: path.resolve(__dirname, '../../..'),
+          root: path.resolve(currentDir, '../../..'),
         }),
       ],
     })

@@ -50,13 +50,7 @@ const zEnv = z.object({
   BREVO_API_KEY: zEnvNonemptyTrimmedRequiredOnNotLocal,
   FROM_EMAIL_NAME: zEnvNonemptyTrimmed,
   FROM_EMAIL_ADDRESS: zEnvNonemptyTrimmed,
-  DEBUG: z
-    .string()
-    .optional()
-    .refine(
-      (val) => process.env.HOST_ENV === 'local' || process.env.NODE_ENV !== 'production' || (!!val && val.length > 0),
-      'Required on not local host on production'
-    ),
+  DEBUG: z.string().optional(),
   BACKEND_SENTRY_DSN: zEnvNonemptyTrimmedRequiredOnNotLocal,
   SOURCE_VERSION: zEnvNonemptyTrimmedRequiredOnNotLocal,
   CLOUDINARY_API_KEY: zEnvNonemptyTrimmedRequiredOnNotLocal,

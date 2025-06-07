@@ -9,7 +9,7 @@ import express, { type Express } from 'express'
 import { logger } from './logger'
 
 // const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const currentDir = path.dirname(__filename)
 
 const checkFileExists = async (filePath: string) => {
   return await fs
@@ -30,7 +30,7 @@ const findWebappDistDir = async (dir: string): Promise<string | null> => {
 }
 
 export const applyServeWebApp = async (expressApp: Express) => {
-  const webappDistDir = await findWebappDistDir(__dirname)
+  const webappDistDir = await findWebappDistDir(currentDir)
   if (!webappDistDir) {
     if (env.HOST_ENV === 'production') {
       throw new Error('Webapp dist dir not found')
