@@ -1,21 +1,4 @@
 services:
-  postgres:
-    image: postgres:15
-    container_name: ideanick-postgres
-    environment:
-      POSTGRES_DB: ideanick
-      POSTGRES_USER: ideanick
-      POSTGRES_PASSWORD: ideanick
-    ports:
-      - '5432:5432'
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U ideanick -d ideanick']
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   app:
     # platform: linux/amd64 # uncomment to build for amd64 which used in heroku
     build:
@@ -34,9 +17,3 @@ services:
       - ./.env.docker
     ports:
       - '${PORT:-3000}:${PORT:-3000}'
-    depends_on:
-      postgres:
-        condition: service_healthy
-
-volumes:
-  postgres_data:
