@@ -1,8 +1,16 @@
-$defaultFontFamily: -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, 'Helvetica Neue', arial, sans-serif;
+$defaultFontFamily:
+  'Inter',
+  -apple-system,
+  blinkmacsystemfont,
+  'Segoe UI',
+  roboto,
+  'Helvetica Neue',
+  arial,
+  sans-serif;
 $defaultFontSize: 14px;
 $defaultLineHeight: 1.4;
-$defaultBackgroundColor: #fff;
-$defaultTextColor: #000;
+$defaultBackgroundColor: #121212;
+$defaultTextColor: #e0e0e0;
 
 $white: #fff;
 $black: #000;
@@ -11,4 +19,16 @@ $blue: #0066cc;
 $red: #cc0000;
 $grayLight: #eee;
 
+// Dark theme colors
+$dark800: #1a1a1a;
+$dark700: #2d2d2d;
+$dark600: #3d3d3d;
+$dark500: #4a4a4a;
+$yellow500: #facc15;
+$gray300: #d1d5db;
+$gray400: #9ca3af;
+$gray500: #6b7280;
+$red400: #f87171;
+
 $borderRadiusSmall: 4px;
+$borderRadiusMedium: 8px;

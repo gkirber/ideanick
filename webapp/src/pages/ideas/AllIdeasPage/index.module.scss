@@ -1,21 +1,105 @@
 @use '../../../styles/vars';
 @use '../../../styles/mixins';
 
-.filter {
-  margin-bottom: 20px;
-}
+.container {
+  .header {
+    margin-bottom: 24px;
 
-.ideas {
-  .idea {
-    padding: 20px;
-    margin-top: 20px;
+    .title {
+      font-size: 32px;
+      font-weight: 700;
+      margin: 0 0 16px 0;
+    }
+
+    .searchContainer {
+      position: relative;
+      margin-bottom: 24px;
+
+      .searchIcon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: vars.$gray400;
+      }
+
+      .searchInput {
+        width: 100%;
+        background-color: vars.$dark700;
+        border: 1px solid vars.$dark600;
+        border-radius: vars.$borderRadiusMedium;
+        padding: 8px 12px 8px 40px;
+        color: vars.$defaultTextColor;
+        font-size: 14px;
+        outline: none;
+        transition: all 0.2s ease;
+
+        &:focus {
+          border-color: vars.$yellow500;
+          box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.2);
+        }
+
+        &::placeholder {
+          color: vars.$gray400;
+        }
+      }
+    }
   }
 
-  .ideaLink {
-    @include mixins.link;
-  }
+  .ideas {
+    .ideaCard {
+      background-color: vars.$dark700;
+      border-radius: vars.$borderRadiusMedium;
+      padding: 16px;
+      margin-bottom: 20px;
+      transition: all 0.2s ease;
+      border-left: 3px solid transparent;
 
-  .more {
-    margin-top: 15px;
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      &:hover {
+        border-left-color: vars.$yellow500;
+        transform: translateX(2px);
+      }
+
+      .ideaLink {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+      }
+
+      .ideaTitle {
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0 0 4px 0;
+        color: vars.$defaultTextColor;
+      }
+
+      .ideaDescription {
+        color: vars.$gray400;
+        margin: 0 0 8px 0;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .ideaLikes {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 14px;
+        color: vars.$gray500;
+
+        svg {
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
+
+    .more {
+      margin-top: 20px;
+    }
   }
 }

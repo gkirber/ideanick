@@ -2,59 +2,85 @@
 @use '../../styles/vars';
 @use '../../styles/mixins';
 
-$breakpoint: '<=900px';
-
 .layout {
-  display: flex;
-  flex-flow: row nowrap;
-  height: 100%;
-  @include media.media($breakpoint) {
-    flex-flow: column nowrap;
+  min-height: 100vh;
+  background-color: vars.$defaultBackgroundColor;
+  color: vars.$defaultTextColor;
+
+  .container {
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 24px;
+    display: flex;
+    gap: 24px;
+
+    @include media.media('<=768px') {
+      flex-direction: column;
+      padding: 16px;
+    }
   }
 
-  .navigation {
-    height: 100%;
-    overflow: auto;
-    flex: 0 0 200px;
-    padding: 20px 30px;
-    border-right: 1px solid vars.$black;
-    @include media.media($breakpoint) {
-      overflow: visible;
-      flex: 0 0 auto;
-      height: auto;
-      border-right: none;
-      border-bottom: 1px solid vars.$black;
-    }
+  .sidebar {
+    width: 256px;
+    flex-shrink: 0;
+    padding-right: 24px;
 
-    .logo {
-      padding-top: 2px;
+    @include media.media('<=768px') {
       width: 100%;
-      max-width: 130px;
-      height: auto;
-      margin-bottom: 15px;
+      padding-right: 0;
     }
 
-    .menu {
-      .item {
-        &:not(:first-child) {
-          margin-top: 5px;
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 32px;
+
+      .bulb {
+        margin-right: 12px;
+        filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.6));
+      }
+
+      .title {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+      }
+    }
+
+    .navigation {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      .link {
+        display: block;
+        padding: 8px 12px;
+        border-radius: vars.$borderRadiusMedium;
+        color: vars.$gray300;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background-color: vars.$dark600;
         }
 
-        .link {
-          @include mixins.link;
+        &.active {
+          background-color: vars.$dark600;
+          color: vars.$defaultTextColor;
+          font-weight: 500;
+        }
+
+        &.logout {
+          color: vars.$red400;
+          margin-top: 24px;
         }
       }
     }
   }
 
   .content {
-    height: 100%;
-    overflow: auto;
-    flex: 1 1 100%;
-    padding: 20px 30px;
-    @include media.media($breakpoint) {
-      overflow: visible;
-      height: auto;
-    }
+    flex: 1;
+    min-width: 0;
   }
 }

@@ -3,10 +3,8 @@ import InfiniteScroll from 'react-infinite-scroller'
 import { Link } from 'react-router-dom'
 
 import { Alert } from '../../../components/Alert'
-import { Input } from '../../../components/Input'
 import { layoutContentElRef } from '../../../components/Layout'
 import { Loader } from '../../../components/Loader'
-import { Segment } from '../../../components/Segment'
 import { useDebounce } from '../../../hooks/useDebounce'
 import { useForm } from '../../../lib/form'
 import { withPageWrapper } from '../../../lib/pageWrapper'
@@ -37,10 +35,38 @@ export const AllIdeasPage = withPageWrapper({
     )
 
   return (
-    <Segment title="All Ideas">
-      <div className={css.filter}>
-        <Input maxWidth={'100%'} label="Search" name="search" formik={formik} />
+    <div className={css.container}>
+      <div className={css.header}>
+        <h2 className={css.title}>All Ideas</h2>
+
+        <div className={css.searchContainer}>
+          <div className={css.searchIcon}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+          <input
+            type="text"
+            placeholder="Search"
+            className={css.searchInput}
+            value={formik.values.search}
+            onChange={formik.handleChange}
+            name="search"
+          />
+        </div>
       </div>
+
       {isLoading || isRefetching ? (
         <Loader type="section" />
       ) : isError ? (
@@ -68,23 +94,32 @@ export const AllIdeasPage = withPageWrapper({
             {data.pages
               .flatMap((page) => page.ideas)
               .map((idea) => (
-                <div className={css.idea} key={idea.nick}>
-                  <Segment
-                    size={2}
-                    title={
-                      <Link className={css.ideaLink} to={getViewIdeaRoute({ ideaNick: idea.nick })}>
-                        {idea.name}
-                      </Link>
-                    }
-                    description={idea.description}
-                  >
-                    Likes: {idea.likesCount}
-                  </Segment>
+                <div className={css.ideaCard} key={idea.nick}>
+                  <Link to={getViewIdeaRoute({ ideaNick: idea.nick })} className={css.ideaLink}>
+                    <h3 className={css.ideaTitle}>{idea.name}</h3>
+                    <p className={css.ideaDescription}>{idea.description}</p>
+                    <div className={css.ideaLikes}>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                      </svg>
+                      Likes: {idea.likesCount}
+                    </div>
+                  </Link>
                 </div>
               ))}
           </InfiniteScroll>
         </div>
       )}
-    </Segment>
+    </div>
   )
 })
